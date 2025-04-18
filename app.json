@@ -1,0 +1,42 @@
+{
+  "expo": {
+    "name": "flip-trx",
+    "slug": "flip-trx",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/images/ic-logo.png",
+    "scheme": "myapp",
+    "userInterfaceStyle": "automatic",
+    "splash": {
+      "image": "./assets/images/ic-logo.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#ffffff"
+    },
+    "ios": {
+      "supportsTablet": true
+    },
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/images/ic-logo.png",
+        "backgroundColor": "#ffffff"
+      },
+      "package": "com.martinlutern.flip-trx"
+    },
+    "web": {
+      "bundler": "metro",
+      "output": "static",
+      "favicon": "./assets/images/ic-logo.png"
+    },
+    "plugins": [
+      "expo-router"
+    ],
+    "experiments": {
+      "typedRoutes": true
+    },
+    "extra": {
+      "eas": {
+        "projectId": "ec67ed3b-5462-4675-b0e4-5d78942f1e9f"
+      }
+    }
+  }
+}
