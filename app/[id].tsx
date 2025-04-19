@@ -105,7 +105,7 @@ const DetailRow = ({
       <Text style={styles.value}>{leftValue}</Text>
     </View>
     {rightLabel && (
-      <View style={styles.column}>
+      <View style={styles.rightColumn}>
         <Text style={styles.label}>{rightLabel}</Text>
         <Text style={styles.value}>{rightValue}</Text>
       </View>
@@ -156,7 +156,6 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     fontSize: 16,
     color: "#000",
-    marginBottom: 16,
   },
   rowHeader: {
     flexDirection: "row",
@@ -177,6 +176,9 @@ const styles = StyleSheet.create({
   },
   column: {
     flex: 1,
+  },
+  rightColumn: {
+    flex: 0.5,
   },
   label: {
     fontWeight: "bold",

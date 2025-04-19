@@ -8,5 +8,6 @@ export const themes = {
     text: ThemeColor.white,
     card: ThemeColor.dark,
     primary: ThemeColor.primaryColor,
+    border: ThemeColor.divider,
   },
 } as Theme;

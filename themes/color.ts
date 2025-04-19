@@ -1,6 +1,6 @@
 const ThemeColor = {
   primaryColor: "#FD6345",
-  secondaryColor: "#FD6345",
+  secondaryColor: "#F08263",
   tertiary: "#4f738b",
   white: "#ffffff",
   black: "#000000",

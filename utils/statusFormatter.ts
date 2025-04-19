@@ -2,7 +2,8 @@ type Status = "PENDING" | "SUCCESS" | "FAILED" | string;
 
 export const StatusFormatter = {
   translate: (status: Status): string => {
-    switch (status.toUpperCase()) {
+    const upperStatus = status.toUpperCase();
+    switch (upperStatus) {
       case "PENDING":
         return "Pengecekan";
       case "SUCCESS":
@@ -10,7 +11,7 @@ export const StatusFormatter = {
       case "FAILED":
         return "Gagal";
       default:
-        return status;
+        return upperStatus;
     }
   },
 
