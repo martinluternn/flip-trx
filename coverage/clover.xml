@@ -1,112 +1,118 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1745097206663" clover="3.2.0">
-  <project timestamp="1745097206663" name="All files">
-    <metrics statements="280" coveredstatements="84" conditionals="151" coveredconditionals="58" methods="87" coveredmethods="18" elements="518" coveredelements="160" complexity="0" loc="280" ncloc="280" packages="17" files="30" classes="30"/>
-    <package name="app">
-      <metrics statements="86" coveredstatements="0" conditionals="34" coveredconditionals="0" methods="27" coveredmethods="0"/>
+<coverage generated="1745101839389" clover="3.2.0">
+  <project timestamp="1745101839389" name="All files">
+    <metrics statements="270" coveredstatements="86" conditionals="139" coveredconditionals="59" methods="81" coveredmethods="18" elements="490" coveredelements="163" complexity="0" loc="270" ncloc="270" packages="23" files="36" classes="36"/>
+    <package name="flip-trx">
+      <metrics statements="1" coveredstatements="0" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
+      <file name="babel-plugin.config.js" path="/Users/martinlutern/flip-trx/babel-plugin.config.js">
+        <metrics statements="1" coveredstatements="0" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
+        <line num="1" count="0" type="stmt"/>
+      </file>
+    </package>
+    <package name="flip-trx.app">
+      <metrics statements="85" coveredstatements="0" conditionals="30" coveredconditionals="0" methods="26" coveredmethods="0"/>
       <file name="[id].tsx" path="/Users/martinlutern/flip-trx/app/[id].tsx">
         <metrics statements="23" coveredstatements="0" conditionals="6" coveredconditionals="0" methods="6" coveredmethods="0"/>
-        <line num="25" count="0" type="stmt"/>
-        <line num="26" count="0" type="stmt"/>
         <line num="27" count="0" type="stmt"/>
         <line num="28" count="0" type="stmt"/>
-        <line num="32" count="0" type="stmt"/>
-        <line num="33" count="0" type="stmt"/>
+        <line num="29" count="0" type="stmt"/>
+        <line num="30" count="0" type="stmt"/>
         <line num="34" count="0" type="stmt"/>
         <line num="35" count="0" type="stmt"/>
         <line num="36" count="0" type="stmt"/>
-        <line num="39" count="0" type="stmt"/>
-        <line num="40" count="0" type="stmt"/>
-        <line num="44" count="0" type="stmt"/>
-        <line num="45" count="0" type="cond" truecount="0" falsecount="2"/>
+        <line num="37" count="0" type="stmt"/>
+        <line num="38" count="0" type="stmt"/>
+        <line num="41" count="0" type="stmt"/>
+        <line num="42" count="0" type="stmt"/>
         <line num="46" count="0" type="stmt"/>
-        <line num="47" count="0" type="stmt"/>
-        <line num="50" count="0" type="stmt"/>
-        <line num="51" count="0" type="cond" truecount="0" falsecount="2"/>
-        <line num="52" count="0" type="stmt"/>
-        <line num="59" count="0" type="cond" truecount="0" falsecount="2"/>
-        <line num="60" count="0" type="stmt"/>
-        <line num="68" count="0" type="stmt"/>
-        <line num="127" count="0" type="stmt"/>
-        <line num="132" count="0" type="stmt"/>
+        <line num="47" count="0" type="cond" truecount="0" falsecount="2"/>
+        <line num="48" count="0" type="stmt"/>
+        <line num="49" count="0" type="stmt"/>
+        <line num="55" count="0" type="stmt"/>
+        <line num="56" count="0" type="cond" truecount="0" falsecount="2"/>
+        <line num="57" count="0" type="stmt"/>
+        <line num="64" count="0" type="cond" truecount="0" falsecount="2"/>
+        <line num="65" count="0" type="stmt"/>
+        <line num="73" count="0" type="stmt"/>
+        <line num="133" count="0" type="stmt"/>
+        <line num="138" count="0" type="stmt"/>
       </file>
       <file name="_layout.tsx" path="/Users/martinlutern/flip-trx/app/_layout.tsx">
         <metrics statements="16" coveredstatements="0" conditionals="10" coveredconditionals="0" methods="6" coveredmethods="0"/>
-        <line num="16" count="0" type="stmt"/>
-        <line num="19" count="0" type="cond" truecount="0" falsecount="2"/>
-        <line num="20" count="0" type="stmt"/>
-        <line num="25" count="0" type="stmt"/>
-        <line num="27" count="0" type="stmt"/>
-        <line num="28" count="0" type="cond" truecount="0" falsecount="4"/>
-        <line num="29" count="0" type="stmt"/>
-        <line num="33" count="0" type="stmt"/>
+        <line num="17" count="0" type="stmt"/>
+        <line num="20" count="0" type="cond" truecount="0" falsecount="2"/>
+        <line num="21" count="0" type="stmt"/>
+        <line num="26" count="0" type="stmt"/>
+        <line num="28" count="0" type="stmt"/>
+        <line num="29" count="0" type="cond" truecount="0" falsecount="4"/>
+        <line num="30" count="0" type="stmt"/>
         <line num="34" count="0" type="stmt"/>
-        <line num="37" count="0" type="stmt"/>
+        <line num="35" count="0" type="stmt"/>
         <line num="38" count="0" type="stmt"/>
-        <line num="45" count="0" type="cond" truecount="0" falsecount="4"/>
-        <line num="46" count="0" type="stmt"/>
-        <line num="53" count="0" type="stmt"/>
-        <line num="77" count="0" type="stmt"/>
+        <line num="39" count="0" type="stmt"/>
+        <line num="46" count="0" type="cond" truecount="0" falsecount="4"/>
+        <line num="47" count="0" type="stmt"/>
+        <line num="54" count="0" type="stmt"/>
         <line num="78" count="0" type="stmt"/>
+        <line num="79" count="0" type="stmt"/>
       </file>
       <file name="index.tsx" path="/Users/martinlutern/flip-trx/app/index.tsx">
-        <metrics statements="47" coveredstatements="0" conditionals="18" coveredconditionals="0" methods="15" coveredmethods="0"/>
-        <line num="39" count="0" type="stmt"/>
-        <line num="40" count="0" type="stmt"/>
-        <line num="41" count="0" type="stmt"/>
-        <line num="42" count="0" type="stmt"/>
-        <line num="43" count="0" type="stmt"/>
+        <metrics statements="46" coveredstatements="0" conditionals="14" coveredconditionals="0" methods="14" coveredmethods="0"/>
         <line num="44" count="0" type="stmt"/>
+        <line num="45" count="0" type="stmt"/>
+        <line num="46" count="0" type="stmt"/>
         <line num="47" count="0" type="stmt"/>
         <line num="48" count="0" type="stmt"/>
-        <line num="59" count="0" type="stmt"/>
-        <line num="60" count="0" type="stmt"/>
-        <line num="61" count="0" type="stmt"/>
-        <line num="70" count="0" type="stmt"/>
-        <line num="71" count="0" type="stmt"/>
-        <line num="72" count="0" type="stmt"/>
-        <line num="73" count="0" type="stmt"/>
-        <line num="74" count="0" type="stmt"/>
+        <line num="49" count="0" type="stmt"/>
+        <line num="52" count="0" type="stmt"/>
+        <line num="53" count="0" type="stmt"/>
+        <line num="64" count="0" type="stmt"/>
+        <line num="65" count="0" type="stmt"/>
+        <line num="66" count="0" type="stmt"/>
+        <line num="75" count="0" type="stmt"/>
         <line num="76" count="0" type="stmt"/>
         <line num="77" count="0" type="stmt"/>
         <line num="78" count="0" type="stmt"/>
-        <line num="79" count="0" type="cond" truecount="0" falsecount="2"/>
+        <line num="79" count="0" type="stmt"/>
+        <line num="81" count="0" type="stmt"/>
+        <line num="82" count="0" type="stmt"/>
         <line num="83" count="0" type="stmt"/>
-        <line num="84" count="0" type="stmt"/>
-        <line num="85" count="0" type="stmt"/>
-        <line num="86" count="0" type="stmt"/>
+        <line num="84" count="0" type="cond" truecount="0" falsecount="2"/>
+        <line num="88" count="0" type="stmt"/>
         <line num="89" count="0" type="stmt"/>
+        <line num="90" count="0" type="stmt"/>
         <line num="91" count="0" type="stmt"/>
-        <line num="92" count="0" type="cond" truecount="0" falsecount="2"/>
-        <line num="93" count="0" type="cond" truecount="0" falsecount="2"/>
         <line num="94" count="0" type="stmt"/>
-        <line num="95" count="0" type="stmt"/>
-        <line num="97" count="0" type="stmt"/>
-        <line num="98" count="0" type="stmt"/>
-        <line num="104" count="0" type="stmt"/>
-        <line num="105" count="0" type="stmt"/>
-        <line num="109" count="0" type="cond" truecount="0" falsecount="2"/>
+        <line num="96" count="0" type="stmt"/>
+        <line num="97" count="0" type="cond" truecount="0" falsecount="2"/>
+        <line num="98" count="0" type="cond" truecount="0" falsecount="2"/>
+        <line num="99" count="0" type="stmt"/>
+        <line num="100" count="0" type="stmt"/>
+        <line num="102" count="0" type="stmt"/>
+        <line num="103" count="0" type="stmt"/>
+        <line num="109" count="0" type="stmt"/>
         <line num="110" count="0" type="stmt"/>
-        <line num="117" count="0" type="cond" truecount="0" falsecount="2"/>
-        <line num="118" count="0" type="cond" truecount="0" falsecount="2"/>
-        <line num="120" count="0" type="stmt"/>
-        <line num="144" count="0" type="cond" truecount="0" falsecount="2"/>
+        <line num="114" count="0" type="cond" truecount="0" falsecount="2"/>
+        <line num="115" count="0" type="stmt"/>
+        <line num="122" count="0" type="cond" truecount="0" falsecount="2"/>
+        <line num="123" count="0" type="cond" truecount="0" falsecount="2"/>
+        <line num="125" count="0" type="stmt"/>
         <line num="147" count="0" type="stmt"/>
         <line num="160" count="0" type="stmt"/>
-        <line num="176" count="0" type="stmt"/>
+        <line num="175" count="0" type="stmt"/>
+        <line num="178" count="0" type="stmt"/>
         <line num="179" count="0" type="stmt"/>
-        <line num="180" count="0" type="stmt"/>
-        <line num="187" count="0" type="stmt"/>
-        <line num="192" count="0" type="stmt"/>
+        <line num="186" count="0" type="stmt"/>
+        <line num="191" count="0" type="stmt"/>
       </file>
     </package>
-    <package name="components">
+    <package name="flip-trx.components">
       <metrics statements="0" coveredstatements="0" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
       <file name="index.ts" path="/Users/martinlutern/flip-trx/components/index.ts">
         <metrics statements="0" coveredstatements="0" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
       </file>
     </package>
-    <package name="components.BankTransferDetail">
+    <package name="flip-trx.components.BankTransferDetail">
       <metrics statements="5" coveredstatements="0" conditionals="2" coveredconditionals="0" methods="3" coveredmethods="0"/>
       <file name="index.tsx" path="/Users/martinlutern/flip-trx/components/BankTransferDetail/index.tsx">
         <metrics statements="5" coveredstatements="0" conditionals="2" coveredconditionals="0" methods="3" coveredmethods="0"/>
@@ -117,7 +123,7 @@
         <line num="44" count="0" type="stmt"/>
       </file>
     </package>
-    <package name="components.BankTransferTitle">
+    <package name="flip-trx.components.BankTransferTitle">
       <metrics statements="4" coveredstatements="0" conditionals="0" coveredconditionals="0" methods="1" coveredmethods="0"/>
       <file name="index.tsx" path="/Users/martinlutern/flip-trx/components/BankTransferTitle/index.tsx">
         <metrics statements="4" coveredstatements="0" conditionals="0" coveredconditionals="0" methods="1" coveredmethods="0"/>
@@ -127,7 +133,7 @@
         <line num="24" count="0" type="stmt"/>
       </file>
     </package>
-    <package name="components.Divider">
+    <package name="flip-trx.components.Divider">
       <metrics statements="4" coveredstatements="0" conditionals="8" coveredconditionals="0" methods="1" coveredmethods="0"/>
       <file name="index.tsx" path="/Users/martinlutern/flip-trx/components/Divider/index.tsx">
         <metrics statements="4" coveredstatements="0" conditionals="8" coveredconditionals="0" methods="1" coveredmethods="0"/>
@@ -137,7 +143,7 @@
         <line num="26" count="0" type="stmt"/>
       </file>
     </package>
-    <package name="components.EmptyView">
+    <package name="flip-trx.components.EmptyView">
       <metrics statements="3" coveredstatements="0" conditionals="0" coveredconditionals="0" methods="1" coveredmethods="0"/>
       <file name="index.tsx" path="/Users/martinlutern/flip-trx/components/EmptyView/index.tsx">
         <metrics statements="3" coveredstatements="0" conditionals="0" coveredconditionals="0" methods="1" coveredmethods="0"/>
@@ -146,7 +152,7 @@
         <line num="24" count="0" type="stmt"/>
       </file>
     </package>
-    <package name="components.IconTextButton">
+    <package name="flip-trx.components.IconTextButton">
       <metrics statements="4" coveredstatements="0" conditionals="8" coveredconditionals="0" methods="1" coveredmethods="0"/>
       <file name="index.tsx" path="/Users/martinlutern/flip-trx/components/IconTextButton/index.tsx">
         <metrics statements="4" coveredstatements="0" conditionals="8" coveredconditionals="0" methods="1" coveredmethods="0"/>
@@ -156,7 +162,7 @@
         <line num="74" count="0" type="stmt"/>
       </file>
     </package>
-    <package name="components.OptionItem">
+    <package name="flip-trx.components.OptionItem">
       <metrics statements="7" coveredstatements="0" conditionals="2" coveredconditionals="0" methods="2" coveredmethods="0"/>
       <file name="index.tsx" path="/Users/martinlutern/flip-trx/components/OptionItem/index.tsx">
         <metrics statements="7" coveredstatements="0" conditionals="2" coveredconditionals="0" methods="2" coveredmethods="0"/>
@@ -169,7 +175,7 @@
         <line num="37" count="0" type="stmt"/>
       </file>
     </package>
-    <package name="components.SortDialog">
+    <package name="flip-trx.components.SortDialog">
       <metrics statements="11" coveredstatements="0" conditionals="0" coveredconditionals="0" methods="4" coveredmethods="0"/>
       <file name="index.tsx" path="/Users/martinlutern/flip-trx/components/SortDialog/index.tsx">
         <metrics statements="11" coveredstatements="0" conditionals="0" coveredconditionals="0" methods="4" coveredmethods="0"/>
@@ -186,7 +192,7 @@
         <line num="59" count="0" type="stmt"/>
       </file>
     </package>
-    <package name="components.Spacer">
+    <package name="flip-trx.components.Spacer">
       <metrics statements="5" coveredstatements="0" conditionals="6" coveredconditionals="0" methods="1" coveredmethods="0"/>
       <file name="index.tsx" path="/Users/martinlutern/flip-trx/components/Spacer/index.tsx">
         <metrics statements="5" coveredstatements="0" conditionals="6" coveredconditionals="0" methods="1" coveredmethods="0"/>
@@ -197,10 +203,10 @@
         <line num="31" count="0" type="stmt"/>
       </file>
     </package>
-    <package name="components.TransactionItem">
-      <metrics statements="18" coveredstatements="0" conditionals="0" coveredconditionals="0" methods="8" coveredmethods="0"/>
+    <package name="flip-trx.components.TransactionItem">
+      <metrics statements="17" coveredstatements="0" conditionals="0" coveredconditionals="0" methods="8" coveredmethods="0"/>
       <file name="index.tsx" path="/Users/martinlutern/flip-trx/components/TransactionItem/index.tsx">
-        <metrics statements="18" coveredstatements="0" conditionals="0" coveredconditionals="0" methods="8" coveredmethods="0"/>
+        <metrics statements="17" coveredstatements="0" conditionals="0" coveredconditionals="0" methods="8" coveredmethods="0"/>
         <line num="10" count="0" type="stmt"/>
         <line num="20" count="0" type="stmt"/>
         <line num="21" count="0" type="stmt"/>
@@ -209,19 +215,29 @@
         <line num="27" count="0" type="stmt"/>
         <line num="28" count="0" type="stmt"/>
         <line num="36" count="0" type="stmt"/>
-        <line num="37" count="0" type="stmt"/>
-        <line num="41" count="0" type="stmt"/>
-        <line num="42" count="0" type="stmt"/>
-        <line num="46" count="0" type="stmt"/>
-        <line num="47" count="0" type="stmt"/>
-        <line num="51" count="0" type="stmt"/>
-        <line num="53" count="0" type="stmt"/>
-        <line num="72" count="0" type="stmt"/>
+        <line num="38" count="0" type="stmt"/>
+        <line num="39" count="0" type="stmt"/>
+        <line num="43" count="0" type="stmt"/>
+        <line num="44" count="0" type="stmt"/>
+        <line num="48" count="0" type="stmt"/>
+        <line num="50" count="0" type="stmt"/>
+        <line num="69" count="0" type="stmt"/>
+        <line num="104" count="0" type="stmt"/>
         <line num="107" count="0" type="stmt"/>
-        <line num="110" count="0" type="stmt"/>
       </file>
     </package>
-    <package name="hooks">
+    <package name="flip-trx.constants">
+      <metrics statements="2" coveredstatements="1" conditionals="0" coveredconditionals="0" methods="1" coveredmethods="0"/>
+      <file name="index.ts" path="/Users/martinlutern/flip-trx/constants/index.ts">
+        <metrics statements="0" coveredstatements="0" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
+      </file>
+      <file name="strings.ts" path="/Users/martinlutern/flip-trx/constants/strings.ts">
+        <metrics statements="2" coveredstatements="1" conditionals="0" coveredconditionals="0" methods="1" coveredmethods="0"/>
+        <line num="1" count="4" type="stmt"/>
+        <line num="24" count="0" type="stmt"/>
+      </file>
+    </package>
+    <package name="flip-trx.hooks">
       <metrics statements="3" coveredstatements="0" conditionals="4" coveredconditionals="0" methods="1" coveredmethods="0"/>
       <file name="Colors.ts" path="/Users/martinlutern/flip-trx/hooks/Colors.ts">
         <metrics statements="1" coveredstatements="0" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
@@ -236,7 +252,7 @@
         <line num="11" count="0" type="cond" truecount="0" falsecount="2"/>
       </file>
     </package>
-    <package name="redux">
+    <package name="flip-trx.redux">
       <metrics statements="1" coveredstatements="0" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
       <file name="index.ts" path="/Users/martinlutern/flip-trx/redux/index.ts">
         <metrics statements="0" coveredstatements="0" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
@@ -246,55 +262,63 @@
         <line num="4" count="0" type="stmt"/>
       </file>
     </package>
-    <package name="redux.transactions">
-      <metrics statements="39" coveredstatements="0" conditionals="15" coveredconditionals="0" methods="18" coveredmethods="0"/>
+    <package name="flip-trx.redux.transactions">
+      <metrics statements="12" coveredstatements="0" conditionals="0" coveredconditionals="0" methods="6" coveredmethods="0"/>
       <file name="transactionsSlice.ts" path="/Users/martinlutern/flip-trx/redux/transactions/transactionsSlice.ts">
-        <metrics statements="38" coveredstatements="0" conditionals="15" coveredconditionals="0" methods="18" coveredmethods="0"/>
-        <line num="13" count="0" type="stmt"/>
+        <metrics statements="12" coveredstatements="0" conditionals="0" coveredconditionals="0" methods="6" coveredmethods="0"/>
+        <line num="5" count="0" type="stmt"/>
         <line num="14" count="0" type="stmt"/>
-        <line num="15" count="0" type="stmt"/>
-        <line num="17" count="0" type="stmt"/>
-        <line num="20" count="0" type="stmt"/>
-        <line num="24" count="0" type="stmt"/>
+        <line num="19" count="0" type="stmt"/>
+        <line num="22" count="0" type="stmt"/>
+        <line num="26" count="0" type="stmt"/>
+        <line num="28" count="0" type="stmt"/>
         <line num="29" count="0" type="stmt"/>
-        <line num="30" count="0" type="stmt"/>
+        <line num="32" count="0" type="stmt"/>
         <line num="33" count="0" type="stmt"/>
-        <line num="35" count="0" type="cond" truecount="0" falsecount="2"/>
-        <line num="38" count="0" type="stmt"/>
+        <line num="36" count="0" type="stmt"/>
+        <line num="37" count="0" type="stmt"/>
         <line num="42" count="0" type="stmt"/>
-        <line num="51" count="0" type="stmt"/>
-        <line num="56" count="0" type="stmt"/>
-        <line num="57" count="0" type="stmt"/>
-        <line num="60" count="0" type="cond" truecount="0" falsecount="2"/>
-        <line num="62" count="0" type="stmt"/>
-        <line num="72" count="0" type="cond" truecount="0" falsecount="5"/>
-        <line num="74" count="0" type="stmt"/>
-        <line num="75" count="0" type="stmt"/>
-        <line num="78" count="0" type="stmt"/>
-        <line num="79" count="0" type="stmt"/>
-        <line num="82" count="0" type="stmt"/>
-        <line num="83" count="0" type="stmt"/>
-        <line num="86" count="0" type="stmt"/>
-        <line num="87" count="0" type="stmt"/>
-        <line num="90" count="0" type="stmt"/>
-        <line num="94" count="0" type="stmt"/>
-        <line num="99" count="0" type="stmt"/>
-        <line num="102" count="0" type="stmt"/>
-        <line num="106" count="0" type="stmt"/>
-        <line num="108" count="0" type="stmt"/>
-        <line num="109" count="0" type="stmt"/>
-        <line num="112" count="0" type="stmt"/>
-        <line num="113" count="0" type="stmt"/>
-        <line num="116" count="0" type="stmt"/>
-        <line num="117" count="0" type="stmt"/>
-        <line num="122" count="0" type="stmt"/>
-      </file>
-      <file name="types.ts" path="/Users/martinlutern/flip-trx/redux/transactions/types.ts">
-        <metrics statements="1" coveredstatements="0" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
-        <line num="30" count="0" type="stmt"/>
       </file>
     </package>
-    <package name="themes">
+    <package name="flip-trx.redux.transactions.api">
+      <metrics statements="2" coveredstatements="0" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
+      <file name="transactionsAPI.ts" path="/Users/martinlutern/flip-trx/redux/transactions/api/transactionsAPI.ts">
+        <metrics statements="2" coveredstatements="0" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
+        <line num="3" count="0" type="stmt"/>
+        <line num="11" count="0" type="stmt"/>
+      </file>
+    </package>
+    <package name="flip-trx.redux.transactions.selectors">
+      <metrics statements="5" coveredstatements="0" conditionals="0" coveredconditionals="0" methods="4" coveredmethods="0"/>
+      <file name="transactionsSelector.ts" path="/Users/martinlutern/flip-trx/redux/transactions/selectors/transactionsSelector.ts">
+        <metrics statements="5" coveredstatements="0" conditionals="0" coveredconditionals="0" methods="4" coveredmethods="0"/>
+        <line num="6" count="0" type="stmt"/>
+        <line num="7" count="0" type="stmt"/>
+        <line num="8" count="0" type="stmt"/>
+        <line num="10" count="0" type="stmt"/>
+        <line num="13" count="0" type="stmt"/>
+      </file>
+    </package>
+    <package name="flip-trx.redux.transactions.thunks">
+      <metrics statements="6" coveredstatements="0" conditionals="5" coveredconditionals="0" methods="2" coveredmethods="0"/>
+      <file name="transactionsThunks.ts" path="/Users/martinlutern/flip-trx/redux/transactions/thunks/transactionsThunks.ts">
+        <metrics statements="6" coveredstatements="0" conditionals="5" coveredconditionals="0" methods="2" coveredmethods="0"/>
+        <line num="8" count="0" type="stmt"/>
+        <line num="13" count="0" type="stmt"/>
+        <line num="14" count="0" type="stmt"/>
+        <line num="17" count="0" type="stmt"/>
+        <line num="19" count="0" type="stmt"/>
+        <line num="20" count="0" type="stmt"/>
+      </file>
+    </package>
+    <package name="flip-trx.redux.transactions.types">
+      <metrics statements="1" coveredstatements="0" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
+      <file name="transactionsTypes.ts" path="/Users/martinlutern/flip-trx/redux/transactions/types/transactionsTypes.ts">
+        <metrics statements="1" coveredstatements="0" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
+        <line num="32" count="0" type="stmt"/>
+      </file>
+    </package>
+    <package name="flip-trx.themes">
       <metrics statements="3" coveredstatements="0" conditionals="12" coveredconditionals="0" methods="1" coveredmethods="0"/>
       <file name="color.ts" path="/Users/martinlutern/flip-trx/themes/color.ts">
         <metrics statements="2" coveredstatements="0" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
@@ -309,15 +333,17 @@
         <line num="4" count="0" type="stmt"/>
       </file>
     </package>
-    <package name="utils">
-      <metrics statements="19" coveredstatements="19" conditionals="9" coveredconditionals="9" methods="9" coveredmethods="9"/>
+    <package name="flip-trx.utils">
+      <metrics statements="21" coveredstatements="20" conditionals="11" coveredconditionals="10" methods="9" coveredmethods="9"/>
       <file name="index.ts" path="/Users/martinlutern/flip-trx/utils/index.ts">
         <metrics statements="0" coveredstatements="0" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
       </file>
       <file name="sortHelper.ts" path="/Users/martinlutern/flip-trx/utils/sortHelper.ts">
-        <metrics statements="2" coveredstatements="2" conditionals="2" coveredconditionals="2" methods="2" coveredmethods="2"/>
-        <line num="3" count="4" type="stmt"/>
-        <line num="7" count="3" type="cond" truecount="2" falsecount="0"/>
+        <metrics statements="4" coveredstatements="3" conditionals="4" coveredconditionals="3" methods="2" coveredmethods="2"/>
+        <line num="4" count="4" type="stmt"/>
+        <line num="8" count="3" type="cond" truecount="1" falsecount="1"/>
+        <line num="9" count="0" type="stmt"/>
+        <line num="11" count="3" type="cond" truecount="2" falsecount="0"/>
       </file>
       <file name="transactionUtils.ts" path="/Users/martinlutern/flip-trx/utils/transactionUtils.ts">
         <metrics statements="17" coveredstatements="17" conditionals="7" coveredconditionals="7" methods="7" coveredmethods="7"/>
@@ -340,7 +366,7 @@
         <line num="47" count="1" type="stmt"/>
       </file>
     </package>
-    <package name="utils.formatter">
+    <package name="flip-trx.utils.formatter">
       <metrics statements="68" coveredstatements="65" conditionals="51" coveredconditionals="49" methods="9" coveredmethods="9"/>
       <file name="bankFormatter.ts" path="/Users/martinlutern/flip-trx/utils/formatter/bankFormatter.ts">
         <metrics statements="5" coveredstatements="5" conditionals="4" coveredconditionals="4" methods="1" coveredmethods="1"/>
@@ -357,70 +383,70 @@
       </file>
       <file name="dateFormatter.ts" path="/Users/martinlutern/flip-trx/utils/formatter/dateFormatter.ts">
         <metrics statements="34" coveredstatements="31" conditionals="25" coveredconditionals="23" methods="2" coveredmethods="2"/>
-        <line num="8" count="3" type="stmt"/>
-        <line num="9" count="3" type="stmt"/>
-        <line num="13" count="3" type="stmt"/>
-        <line num="17" count="12" type="stmt"/>
-        <line num="18" count="12" type="cond" truecount="4" falsecount="0"/>
-        <line num="19" count="2" type="stmt"/>
-        <line num="22" count="10" type="stmt"/>
-        <line num="23" count="10" type="cond" truecount="2" falsecount="0"/>
-        <line num="24" count="5" type="stmt"/>
-        <line num="26" count="10" type="cond" truecount="4" falsecount="0"/>
-        <line num="27" count="5" type="stmt"/>
-        <line num="30" count="10" type="stmt"/>
-        <line num="32" count="10" type="cond" truecount="2" falsecount="0"/>
-        <line num="33" count="1" type="stmt"/>
-        <line num="37" count="9" type="cond" truecount="2" falsecount="0"/>
+        <line num="10" count="3" type="stmt"/>
+        <line num="11" count="3" type="stmt"/>
+        <line num="15" count="3" type="stmt"/>
+        <line num="19" count="12" type="stmt"/>
+        <line num="20" count="12" type="cond" truecount="4" falsecount="0"/>
+        <line num="21" count="2" type="stmt"/>
+        <line num="24" count="10" type="stmt"/>
+        <line num="25" count="10" type="cond" truecount="2" falsecount="0"/>
+        <line num="26" count="5" type="stmt"/>
+        <line num="28" count="10" type="cond" truecount="4" falsecount="0"/>
+        <line num="29" count="5" type="stmt"/>
+        <line num="32" count="10" type="stmt"/>
+        <line num="34" count="10" type="cond" truecount="2" falsecount="0"/>
+        <line num="35" count="1" type="stmt"/>
+        <line num="39" count="9" type="cond" truecount="4" falsecount="0"/>
         <line num="41" count="9" type="stmt"/>
-        <line num="43" count="9" type="stmt"/>
-        <line num="45" count="9" type="stmt"/>
-        <line num="50" count="9" type="stmt"/>
-        <line num="51" count="9" type="stmt"/>
-        <line num="52" count="9" type="stmt"/>
-        <line num="54" count="9" type="cond" truecount="3" falsecount="1"/>
-        <line num="55" count="0" type="stmt"/>
-        <line num="58" count="9" type="stmt"/>
-        <line num="60" count="9" type="cond" truecount="2" falsecount="0"/>
-        <line num="61" count="2" type="stmt"/>
-        <line num="64" count="2" type="stmt"/>
-        <line num="67" count="2" type="stmt"/>
-        <line num="70" count="9" type="stmt"/>
-        <line num="72" count="3" type="cond" truecount="1" falsecount="1"/>
-        <line num="73" count="3" type="stmt"/>
-        <line num="74" count="3" type="stmt"/>
-        <line num="76" count="0" type="stmt"/>
-        <line num="77" count="0" type="stmt"/>
+        <line num="42" count="9" type="stmt"/>
+        <line num="44" count="9" type="stmt"/>
+        <line num="59" count="9" type="stmt"/>
+        <line num="60" count="9" type="stmt"/>
+        <line num="61" count="9" type="stmt"/>
+        <line num="63" count="9" type="cond" truecount="3" falsecount="1"/>
+        <line num="64" count="0" type="stmt"/>
+        <line num="69" count="9" type="stmt"/>
+        <line num="71" count="9" type="cond" truecount="2" falsecount="0"/>
+        <line num="72" count="2" type="stmt"/>
+        <line num="76" count="2" type="stmt"/>
+        <line num="80" count="2" type="stmt"/>
+        <line num="83" count="9" type="stmt"/>
+        <line num="85" count="3" type="cond" truecount="1" falsecount="1"/>
+        <line num="86" count="3" type="stmt"/>
+        <line num="87" count="3" type="stmt"/>
+        <line num="89" count="0" type="stmt"/>
+        <line num="90" count="0" type="stmt"/>
       </file>
       <file name="statusFormatter.ts" path="/Users/martinlutern/flip-trx/utils/formatter/statusFormatter.ts">
         <metrics statements="27" coveredstatements="27" conditionals="20" coveredconditionals="20" methods="5" coveredmethods="5"/>
-        <line num="3" count="3" type="stmt"/>
-        <line num="5" count="8" type="stmt"/>
-        <line num="6" count="8" type="cond" truecount="4" falsecount="0"/>
-        <line num="8" count="2" type="stmt"/>
+        <line num="5" count="3" type="stmt"/>
+        <line num="7" count="8" type="stmt"/>
+        <line num="8" count="8" type="cond" truecount="4" falsecount="0"/>
         <line num="10" count="2" type="stmt"/>
         <line num="12" count="2" type="stmt"/>
         <line num="14" count="2" type="stmt"/>
-        <line num="19" count="4" type="cond" truecount="4" falsecount="0"/>
-        <line num="21" count="1" type="stmt"/>
+        <line num="16" count="2" type="stmt"/>
+        <line num="21" count="4" type="cond" truecount="4" falsecount="0"/>
         <line num="23" count="1" type="stmt"/>
         <line num="25" count="1" type="stmt"/>
         <line num="27" count="1" type="stmt"/>
-        <line num="32" count="4" type="cond" truecount="4" falsecount="0"/>
-        <line num="34" count="1" type="stmt"/>
+        <line num="29" count="1" type="stmt"/>
+        <line num="34" count="4" type="cond" truecount="4" falsecount="0"/>
         <line num="36" count="1" type="stmt"/>
         <line num="38" count="1" type="stmt"/>
         <line num="40" count="1" type="stmt"/>
-        <line num="45" count="4" type="cond" truecount="4" falsecount="0"/>
-        <line num="47" count="1" type="stmt"/>
+        <line num="42" count="1" type="stmt"/>
+        <line num="47" count="4" type="cond" truecount="4" falsecount="0"/>
         <line num="49" count="1" type="stmt"/>
         <line num="51" count="1" type="stmt"/>
         <line num="53" count="1" type="stmt"/>
-        <line num="58" count="4" type="cond" truecount="4" falsecount="0"/>
-        <line num="60" count="1" type="stmt"/>
+        <line num="55" count="1" type="stmt"/>
+        <line num="60" count="4" type="cond" truecount="4" falsecount="0"/>
         <line num="62" count="1" type="stmt"/>
         <line num="64" count="1" type="stmt"/>
         <line num="66" count="1" type="stmt"/>
+        <line num="68" count="1" type="stmt"/>
       </file>
     </package>
   </project>

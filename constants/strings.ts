@@ -7,7 +7,7 @@ export const STRINGS = {
     ERROR_TITLE: "Terjadi kesalahan",
     COPY_SUCCESS: "Disalin",
     UNKNOWN_ERROR: "Unknown error",
-    NOT_FOUND: "Tidak ditemukan",
+    NOT_FOUND: "-",
     TRY_AGAIN: "Silahkan coba lagi",
   },
   TRANSACTION_DETAIL: {

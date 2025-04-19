@@ -82,15 +82,18 @@ yarn lint --fix
 ```
 
 7. Project Structure
+```bash
 flip-trx/
 ├── app/                # Expo Router components
 ├── assets/             # Images and fonts
 ├── components/         # Reusable components
+├── constants/          # Variable constants
 ├── hooks/              # React hooks
 ├── redux/              # Redux store and slices
 ├── themes/             # Theme configuration
 ├── utils/              # Helper functions and formatters
 ├── .env.example        # Environment template
 └── babel.config.js     # Babel configuration
+```
 
 for more details, contact: `mlutern@gmail.com`
