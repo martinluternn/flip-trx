@@ -1,7 +1,7 @@
 import React from "react";
 import { View, ViewStyle } from "react-native";
 
-type SpacerSize = "extraSmall" | "small" | "medium" | "large" | "extraLarge";
+type SpacerSize = "xxs" | "xs" | "sm" | "md" | "lg" | "xl" | "xxl";
 
 interface SpacerProps {
   size?: SpacerSize | number;
@@ -9,15 +9,17 @@ interface SpacerProps {
 }
 
 const sizeMap: Record<SpacerSize, number> = {
-  extraSmall: 4,
-  small: 8,
-  medium: 16,
-  large: 24,
-  extraLarge: 32,
+  xxs: 2,
+  xs: 4,
+  sm: 8,
+  md: 16,
+  lg: 24,
+  xl: 32,
+  xxl: 42,
 };
 
 const Spacer: React.FC<SpacerProps> = ({
-  size = "medium",
+  size = "md",
   horizontal = false,
 }) => {
   const spacing = typeof size === "number" ? size : sizeMap[size];

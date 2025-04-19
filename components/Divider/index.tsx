@@ -1,6 +1,6 @@
+import { useThemeColor } from "@/hooks";
 import React, { memo } from "react";
 import { View, StyleProp, ViewStyle } from "react-native";
-import ThemeColor from "@/themes/color";
 
 type DividerProps = {
   horizontal?: boolean;
@@ -12,12 +12,14 @@ type DividerProps = {
 const Divider = memo(({
   horizontal = true,
   thickness = 1,
-  color = ThemeColor.divider,
+  color,
   style,
 }: DividerProps) => {
+  const backgroundColor = useThemeColor("background");
+
   const baseStyle: ViewStyle = {
     [horizontal ? "height" : "width"]: thickness,
-    backgroundColor: color,
+    backgroundColor: color ?? backgroundColor,
     alignSelf: horizontal ? "stretch" : "center",
   };
 
