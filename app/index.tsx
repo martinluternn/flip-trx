@@ -14,18 +14,26 @@ import SortDialog from "@/components/SortDialog";
 import React, { useState, useEffect, useRef, useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@/redux/store";
-import {
-  fetchTransactions,
-  setSortOption,
-  setSearchQuery,
-  selectDisplayedTransactions,
-} from "@/features/transactions/transactionsSlice";
 import TransactionItem from "@/components/TransactionItem";
 import { EvilIcons, MaterialCommunityIcons } from "@expo/vector-icons";
 import { shallowEqual } from "react-redux";
-import { Transaction } from "@/features/transactions/types";
+import { Transaction } from "@/redux/transactions/types";
+import {
+  fetchTransactions,
+  selectDisplayedTransactions,
+  setSearchQuery,
+  setSortOption,
+} from "@/redux/transactions";
+import { useThemeColor } from "@/hooks";
 
 export default function TransactionList() {
+  const primaryColor = useThemeColor("primaryColor");
+  const textPrimary = useThemeColor("textPrimary");
+  const textSecondary = useThemeColor("textSecondary");
+  const disabledColor = useThemeColor("disabled");
+  const errorColor = useThemeColor("failed");
+  const whiteColor = useThemeColor("white");
+
   const dispatch = useDispatch<AppDispatch>();
   const { status, error, sortOption } = useSelector(
     (state: RootState) => ({
@@ -82,22 +90,24 @@ export default function TransactionList() {
   if (status === "loading")
     return <ActivityIndicator size="large" style={styles.loader} />;
   if (status === "failed")
-    return <Text style={styles.error}>Error: {error}</Text>;
+    return (
+      <Text style={[styles.error, { color: errorColor }]}>Error: {error}</Text>
+    );
 
   return (
     <SafeAreaView style={styles.safeArea}>
-      <View style={styles.headerContainer}>
+      <View style={[styles.headerContainer, { backgroundColor: whiteColor }]}>
         <View style={styles.searchContainer}>
           <EvilIcons
             name="search"
             size={24}
-            color="#A3A3A3"
+            color={localSearchQuery.length > 0 ? textPrimary : textSecondary}
             style={styles.searchIcon}
           />
           <TextInput
             placeholder="Cari nama, bank, atau nominal"
-            placeholderTextColor="#888"
-            style={styles.searchInput}
+            placeholderTextColor={textSecondary}
+            style={[styles.searchInput, { color: textPrimary }]}
             onChangeText={handleSearchChange}
             value={localSearchQuery}
             returnKeyType="search"
@@ -111,7 +121,7 @@ export default function TransactionList() {
           <Text
             style={[
               styles.sortButtonText,
-              displayedData.length === 0 && styles.disabledSort,
+              displayedData.length === 0 ? { color: disabledColor } : { color: primaryColor },
             ]}
           >
             URUTKAN
@@ -119,7 +129,7 @@ export default function TransactionList() {
           <MaterialCommunityIcons
             name="chevron-down"
             size={30}
-            color={displayedData.length === 0 ? "#cecece" : "#F26C39"}
+            color={displayedData.length === 0 ? disabledColor : primaryColor}
           />
         </Pressable>
       </View>
@@ -132,7 +142,9 @@ export default function TransactionList() {
         }
         renderItem={renderTransactionItem}
         ListEmptyComponent={
-          <View style={styles.emptyContainer}>
+          <View
+            style={[styles.emptyContainer, { backgroundColor: whiteColor }]}
+          >
             <Image
               source={require("@/assets/images/empty-trx.png")}
               style={styles.emptyImage}
@@ -141,7 +153,7 @@ export default function TransactionList() {
             <Text style={styles.emptyTitle}>
               {`Kami tidak bisa menemukan "${localSearchQuery}"`}
             </Text>
-            <Text style={styles.emptySubtitle}>
+            <Text style={[styles.emptySubtitle, { color: textPrimary }]}>
               Mohon cek lagi ejaannya atau ganti dengan nama, bank, atau nominal
               lain.
             </Text>
@@ -166,13 +178,11 @@ export default function TransactionList() {
 const styles = StyleSheet.create({
   safeArea: {
     flex: 1,
-    backgroundColor: "#F5FAF8",
   },
   headerContainer: {
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-    backgroundColor: "#fff",
     marginHorizontal: 8,
     padding: 8,
     borderRadius: 6,
@@ -189,7 +199,6 @@ const styles = StyleSheet.create({
   searchInput: {
     flex: 1,
     height: 40,
-    color: "#A3A3A3",
     fontSize: 12,
     fontWeight: "500",
   },
@@ -198,19 +207,15 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   sortButtonText: {
-    color: "#F26C39",
     fontWeight: "bold",
     fontSize: 14,
   },
-  disabledSort: {
-    color: "#cecece",
-  },
   emptyContainer: {
     flex: 1,
-    backgroundColor: "#fff",
     alignItems: "center",
     justifyContent: "center",
     paddingHorizontal: 20,
+    paddingVertical: 60,
   },
   emptyImage: {
     width: "100%",
@@ -226,7 +231,6 @@ const styles = StyleSheet.create({
   emptySubtitle: {
     fontSize: 14,
     textAlign: "center",
-    color: "#333",
   },
   loader: {
     marginTop: 50,
@@ -234,6 +238,5 @@ const styles = StyleSheet.create({
   error: {
     textAlign: "center",
     marginTop: 20,
-    color: "red",
   },
 });

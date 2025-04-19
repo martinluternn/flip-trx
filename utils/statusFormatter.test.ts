@@ -1,4 +1,4 @@
-import { StatusFormatter } from "./statusFormatter";
+import { StatusFormatter } from ".";
 
 describe("StatusFormatter", () => {
   const testCases = [
