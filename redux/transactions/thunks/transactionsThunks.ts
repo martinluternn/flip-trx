@@ -3,6 +3,7 @@ import type { RootState } from "@/redux/store";
 import type { AxiosError } from "axios/index";
 import { transactionsAPI, Endpoints } from "../api/transactionsAPI";
 import { Transaction } from "../types/transactionsTypes";
+import { STRINGS } from "@/constants";
 
 export const fetchTransactions = createAsyncThunk<
   Transaction[],
@@ -17,7 +18,7 @@ export const fetchTransactions = createAsyncThunk<
   } catch (err) {
     const error = err as AxiosError;
     return rejectWithValue(
-      error.response?.data || error.message || "Unknown error occurred"
+      error.response?.data || error.message || STRINGS.COMMON.UNKNOWN_ERROR
     );
   }
 });

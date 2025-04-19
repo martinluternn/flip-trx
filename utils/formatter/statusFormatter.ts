@@ -1,15 +1,17 @@
+import { STRINGS } from "@/constants";
+
 type Status = "PENDING" | "SUCCESS" | "FAILED" | string;
 
 export const StatusFormatter = {
   translate: (status: Status): string => {
     const upperStatus = status.toUpperCase();
     switch (upperStatus) {
-      case "PENDING":
-        return "Pengecekan";
-      case "SUCCESS":
-        return "Berhasil";
-      case "FAILED":
-        return "Gagal";
+      case STRINGS.STATUS.PENDING_TEXT:
+        return STRINGS.STATUS.PENDING;
+      case STRINGS.STATUS.SUCCESS_TEXT:
+        return STRINGS.STATUS.SUCCESS;
+      case STRINGS.STATUS.FAILED_TEXT:
+        return STRINGS.STATUS.FAILED;
       default:
         return upperStatus;
     }
@@ -17,11 +19,11 @@ export const StatusFormatter = {
 
   getBadgeColor: (status: Status): string => {
     switch (status.toUpperCase()) {
-      case "PENDING":
+      case STRINGS.STATUS.PENDING_TEXT:
         return "#FD6345";
-      case "SUCCESS":
+      case STRINGS.STATUS.SUCCESS_TEXT:
         return "#56B683";
-      case "FAILED":
+      case STRINGS.STATUS.FAILED_TEXT:
         return "#C5231F";
       default:
         return "#95a5a6";
@@ -30,11 +32,11 @@ export const StatusFormatter = {
 
   getBackgroundColor: (status: Status): string => {
     switch (status.toUpperCase()) {
-      case "PENDING":
+      case STRINGS.STATUS.PENDING_TEXT:
         return "transparent";
-      case "SUCCESS":
+      case STRINGS.STATUS.SUCCESS_TEXT:
         return "#56B683";
-      case "FAILED":
+      case STRINGS.STATUS.FAILED_TEXT:
         return "#C5231F";
       default:
         return "transparent";
@@ -43,11 +45,11 @@ export const StatusFormatter = {
 
   getBorderColor: (status: Status): string => {
     switch (status.toUpperCase()) {
-      case "PENDING":
+      case STRINGS.STATUS.PENDING_TEXT:
         return "#FD6345";
-      case "SUCCESS":
+      case STRINGS.STATUS.SUCCESS_TEXT:
         return "transparent";
-      case "FAILED":
+      case STRINGS.STATUS.FAILED_TEXT:
         return "transparent";
       default:
         return "transparent";
@@ -56,11 +58,11 @@ export const StatusFormatter = {
 
   getTextColor: (status: Status): string => {
     switch (status.toUpperCase()) {
-      case "PENDING":
+      case STRINGS.STATUS.PENDING_TEXT:
         return "#000000";
-      case "SUCCESS":
+      case STRINGS.STATUS.SUCCESS_TEXT:
         return "#FFFFFF";
-      case "FAILED":
+      case STRINGS.STATUS.FAILED_TEXT:
         return "#FFFFFF";
       default:
         return "#FFFFFF";

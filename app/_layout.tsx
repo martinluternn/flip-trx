@@ -12,6 +12,7 @@ import { Provider } from "react-redux";
 import { store } from "@/redux/store";
 import type { NativeStackNavigationOptions } from "@react-navigation/native-stack";
 import { Colors } from "@/hooks";
+import { STRINGS } from "@/constants";
 
 SplashScreen.preventAutoHideAsync();
 
@@ -57,14 +58,14 @@ export default function RootLayout() {
           <Stack.Screen
             name="index"
             options={{
-              title: "Transaction List",
+              title: STRINGS.TRANSACTION_LIST.TITLE,
               animation: "default",
             }}
           />
           <Stack.Screen
             name="[id]"
             options={{
-              title: "Transaction Detail",
+              title: STRINGS.TRANSACTION_DETAIL.TITLE,
               animation: "slide_from_right",
             }}
           />
