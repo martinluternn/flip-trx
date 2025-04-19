@@ -1,6 +1,6 @@
 import { useThemeColor } from "@/hooks";
 import { Transaction } from "@/redux";
-import { formatIndonesianDate, StatusFormatter } from "@/utils";
+import { formatCurrency, formatIndonesianDate, StatusFormatter } from "@/utils";
 import { router } from "expo-router";
 import React, { useMemo, useCallback, memo } from "react";
 import { View, Text, StyleSheet, Pressable } from "react-native";
@@ -33,10 +33,7 @@ const TransactionItem: React.FC<Transaction> = memo(
       [status]
     );
 
-    const formattedAmount = useMemo(
-      () => `Rp${amount.toLocaleString("id-ID")}`,
-      [amount]
-    );
+    const formattedAmount = useMemo(() => formatCurrency(amount), [amount]);
 
     const formattedDate = useMemo(
       () => formatIndonesianDate(created_at),
