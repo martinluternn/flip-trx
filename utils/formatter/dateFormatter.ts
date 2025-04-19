@@ -1,3 +1,5 @@
+import { STRINGS } from "@/constants";
+
 export interface IndonesianDateOptions {
   showTime?: boolean;
   timeZone?: "WIB" | "WITA" | "WIT";
@@ -16,7 +18,7 @@ export const formatIndonesianDate = (
 ): string => {
   try {
     if (!dateString || typeof dateString !== "string") {
-      throw new DateFormatError("Input harus berupa string tanggal");
+      throw new DateFormatError(STRINGS.ERROR_MESSAGES.DATE_INPUT_ERROR);
     }
 
     let isoDateString = dateString;
@@ -30,21 +32,28 @@ export const formatIndonesianDate = (
     const parsedDate = new Date(isoDateString);
 
     if (isNaN(parsedDate.getTime())) {
-      throw new DateFormatError("Format tanggal tidak valid");
+      throw new DateFormatError(STRINGS.ERROR_MESSAGES.DATE_INVALID);
     }
 
-    const timeZoneOffset = 
-      options.timeZone === "WITA" ? 8 : 
-      options.timeZone === "WIT" ? 9 : 
-      7; // Default to WIB (UTC+7)
+    const timeZoneOffset =
+      options.timeZone === "WITA" ? 8 : options.timeZone === "WIT" ? 9 : 7; // Default to WIB (UTC+7)
 
-    const adjustedTime = parsedDate.getTime() + 
-      timeZoneOffset * 60 * 60 * 1000;
+    const adjustedTime = parsedDate.getTime() + timeZoneOffset * 60 * 60 * 1000;
     const adjustedDate = new Date(adjustedTime);
 
     const bulan: string[] = [
-      "Januari", "Februari", "Maret", "April", "Mei", "Juni",
-      "Juli", "Agustus", "September", "Oktober", "November", "Desember"
+      STRINGS.MONTH.JANUARY,
+      STRINGS.MONTH.FEBRUARY,
+      STRINGS.MONTH.MARCH,
+      STRINGS.MONTH.APRIL,
+      STRINGS.MONTH.MAY,
+      STRINGS.MONTH.JUNE,
+      STRINGS.MONTH.JULY,
+      STRINGS.MONTH.AUGUST,
+      STRINGS.MONTH.SEPTEMBER,
+      STRINGS.MONTH.OCTOBER,
+      STRINGS.MONTH.NOVEMBER,
+      STRINGS.MONTH.DECEMBER,
     ];
 
     const day: number = adjustedDate.getUTCDate();
@@ -52,16 +61,20 @@ export const formatIndonesianDate = (
     const year: number = adjustedDate.getUTCFullYear();
 
     if (monthIndex < 0 || monthIndex > 11) {
-      throw new DateFormatError("Indeks bulan di luar jangkauan");
+      throw new DateFormatError(
+        STRINGS.ERROR_MESSAGES.MONTH_INDEX_OUT_OF_RANGE
+      );
     }
 
     let formattedDate = `${day} ${bulan[monthIndex]} ${year}`;
 
     if (options.showTime) {
-      const hours: string = adjustedDate.getUTCHours()
+      const hours: string = adjustedDate
+        .getUTCHours()
         .toString()
         .padStart(2, "0");
-      const minutes: string = adjustedDate.getUTCMinutes()
+      const minutes: string = adjustedDate
+        .getUTCMinutes()
         .toString()
         .padStart(2, "0");
       formattedDate += ` ${hours}:${minutes}`;

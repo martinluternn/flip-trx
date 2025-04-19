@@ -18,7 +18,10 @@ import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@/redux/store";
 import { EvilIcons } from "@expo/vector-icons";
 import { shallowEqual } from "react-redux";
-import { SORT_MAP_OPTIONS, Transaction } from "@/redux/transactions/types/transactionsTypes";
+import {
+  SORT_MAP_OPTIONS,
+  Transaction,
+} from "@/redux/transactions/types/transactionsTypes";
 import {
   fetchTransactions,
   selectDisplayedTransactions,
@@ -34,6 +37,7 @@ import {
   TransactionItem,
 } from "@/components";
 import { getSortOptionLabel } from "@/utils";
+import { STRINGS } from "@/constants";
 
 export default function TransactionList() {
   // Theme colors
@@ -116,7 +120,7 @@ export default function TransactionList() {
       </>
     );
   if (status === "failed")
-    return <EmptyView title={`Terjadi kesalahan`} subtitle={error ?? "-"} />;
+    return <EmptyView title={STRINGS.COMMON.ERROR_TITLE} subtitle={error ?? STRINGS.COMMON.UNKNOWN_ERROR} />;
 
   return (
     <SafeAreaView style={styles.safeArea}>
@@ -129,7 +133,7 @@ export default function TransactionList() {
           />
           <Spacer size={"xs"} horizontal />
           <TextInput
-            placeholder="Cari nama, bank, atau nominal"
+            placeholder={STRINGS.COMMON.SEARCH_PLACEHOLDER}
             placeholderTextColor={textSecondary}
             style={styles.searchInput}
             onChangeText={handleSearchChange}
@@ -160,9 +164,8 @@ export default function TransactionList() {
         renderItem={renderTransactionItem}
         ListEmptyComponent={
           <EmptyView
-            title={`Kami tidak bisa menemukan "${localSearchQuery}"`}
-            subtitle="Mohon cek lagi ejaannya atau ganti dengan nama, bank, atau nominal
-              lain."
+            title={STRINGS.TRANSACTION_LIST.EMPTY_TITLE(localSearchQuery)}
+            subtitle={STRINGS.TRANSACTION_LIST.EMPTY_SUBTITLE}
           />
         }
         initialNumToRender={10}

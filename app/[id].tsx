@@ -21,6 +21,7 @@ import {
   Spacer,
 } from "@/components";
 import { formatCurrency } from "@/utils";
+import { STRINGS } from "@/constants";
 
 export default function DetailPage() {
   const { id } = useLocalSearchParams();
@@ -45,7 +46,10 @@ export default function DetailPage() {
   const copyToClipboard = useCallback(() => {
     if (!transaction) return;
     Clipboard.setStringAsync(transaction.id);
-    Alert.alert("Disalin", "ID Transaksi telah disalin");
+    Alert.alert(
+      STRINGS.COMMON.COPY_SUCCESS,
+      STRINGS.TRANSACTION_DETAIL.COPY_CONFIRMATION
+    );
   }, [transaction]);
 
   const formattedDate = useMemo(() => {
@@ -60,8 +64,8 @@ export default function DetailPage() {
   if (!transaction) {
     return (
       <EmptyView
-        title={`Transaksi tidak ditemukan`}
-        subtitle={"silahkan coba lagi"}
+        title={STRINGS.ERROR_MESSAGES.TRANSACTION_NOT_FOUND}
+        subtitle={STRINGS.COMMON.TRY_AGAIN}
       />
     );
   }
@@ -74,7 +78,7 @@ export default function DetailPage() {
         <View style={styles.rowHeader}>
           <IconTextButton
             iconName="content-copy"
-            text={`ID TRANSAKSI: #${transaction.id}`}
+            text={`${STRINGS.TRANSACTION_DETAIL.ID_PREFIX}${transaction.id}`}
             onPress={copyToClipboard}
             iconColor={primaryColor}
             textStyle={styles.transactionId}
@@ -87,15 +91,16 @@ export default function DetailPage() {
         <Divider thickness={1} />
         <Spacer size={"lg"} />
         <View style={styles.titleRow}>
-          <Text style={styles.sectionTitle}>DETAIL TRANSAKSI</Text>
+          <Text style={styles.sectionTitle}>
+            {STRINGS.TRANSACTION_DETAIL.TITLE}
+          </Text>
           <Pressable onPress={router.back}>
-            <Text style={styles.closeText}>Tutup</Text>
+            <Text style={styles.closeText}>{STRINGS.COMMON.CLOSE}</Text>
           </Pressable>
         </View>
         <Spacer size={"lg"} />
       </View>
       <Spacer size={"xxs"} />
-      <Spacer size={"xs"} />
       <View style={styles.infoBox}>
         <BankTransferTitle
           beneficiaryBank={transaction.beneficiary_bank}
@@ -104,19 +109,19 @@ export default function DetailPage() {
         <BankTransferDetail
           leftLabel={transaction.beneficiary_name.toUpperCase()}
           leftValue={transaction.account_number}
-          rightLabel="NOMINAL"
+          rightLabel={STRINGS.TRANSACTION_DETAIL.AMOUNT}
           rightValue={formatCurrency(transaction.amount)}
           textColor={blackColor}
         />
         <BankTransferDetail
-          leftLabel="BERITA TRANSFER"
+          leftLabel={STRINGS.TRANSACTION_DETAIL.TRANSFER_TITLE}
           leftValue={transaction.remark}
-          rightLabel="KODE UNIK"
+          rightLabel={STRINGS.TRANSACTION_DETAIL.UNIQUE_CODE}
           rightValue={transaction.unique_code}
           textColor={blackColor}
         />
         <BankTransferDetail
-          leftLabel="WAKTU DIBUAT"
+          leftLabel={STRINGS.TRANSACTION_DETAIL.CREATED_TIME}
           leftValue={formattedDate}
           textColor={blackColor}
         />
@@ -155,7 +160,6 @@ const createStyles = (
     },
     infoBox: {
       padding: 24,
-      borderRadius: 8,
       backgroundColor: whiteColor,
     },
     rowHeader: {

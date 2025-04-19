@@ -1,3 +1,4 @@
+import { STRINGS } from "@/constants";
 import { SortOption } from "@/redux";
 
 export const getSortOptionLabel = (
@@ -5,7 +6,7 @@ export const getSortOptionLabel = (
   sortOption: SortOption
 ): string => {
   if (sortOption === "default") {
-    return "URUTKAN";
+    return STRINGS.SORT_OPTIONS.DEFAULT;
   }
-  return options.find((el) => el.key === sortOption)?.label ?? "-";
+  return options.find((el) => el.key === sortOption)?.label ?? STRINGS.COMMON.NOT_FOUND;
 };
