@@ -3,95 +3,137 @@ import { formatBankName } from "@/utils/bankFormatter";
 import { formatIndonesianDate } from "@/utils/dateFormatter";
 import { StatusFormatter } from "@/utils/statusFormatter";
 import { router } from "expo-router";
-import React from "react";
-import { View, Text, StyleSheet, Pressable } from "react-native";
+import React, { useMemo, useCallback, memo } from "react";
+import {
+  View,
+  Text,
+  StyleSheet,
+  Pressable,
+  StyleProp,
+  ViewStyle,
+} from "react-native";
 
-const TransactionItem: React.FC<Transaction> = ({
-  id,
-  amount,
-  sender_bank,
-  beneficiary_bank,
-  beneficiary_name,
-  created_at,
-  status,
-}) => {
-  return (
-    <Pressable
-      onPress={() => router.push(`/${encodeURIComponent(id)}`)}
-      style={[
+const TransactionItem: React.FC<Transaction> = memo(
+  ({
+    id,
+    amount,
+    sender_bank,
+    beneficiary_bank,
+    beneficiary_name,
+    created_at,
+    status,
+  }) => {
+    const handlePress = useCallback(() => {
+      router.push(`/${encodeURIComponent(id)}`);
+    }, [id]);
+
+    const statusColors = useMemo(
+      () => ({
+        background: StatusFormatter.getBackgroundColor(status),
+        border: StatusFormatter.getBorderColor(status),
+        text: StatusFormatter.getTextColor(status),
+      }),
+      [status]
+    );
+
+    const formattedAmount = useMemo(
+      () => `Rp${amount.toLocaleString("id-ID")}`,
+      [amount]
+    );
+
+    const formattedDate = useMemo(
+      () => formatIndonesianDate(created_at),
+      [created_at]
+    );
+
+    const translatedStatus = useMemo(
+      () => StatusFormatter.translate(status),
+      [status]
+    );
+
+    const containerStyle = useMemo<StyleProp<ViewStyle>>(
+      () => [
         styles.container,
-        { borderLeftColor: StatusFormatter.getBadgeColor(status) },
-      ]}
-    >
-      <Text style={styles.bankText}>
-        {formatBankName(sender_bank)} ➔ {formatBankName(beneficiary_bank)}
-      </Text>
-      <View style={styles.row}>
-        <Text style={styles.name}>{beneficiary_name.toUpperCase()}</Text>
-        <View
-          style={[
-            styles.statusBox,
-            {
-              backgroundColor: StatusFormatter.getBackgroundColor(status),
-              borderColor: StatusFormatter.getBorderColor(status),
-            },
-          ]}
-        >
-          <Text
+        {
+          borderLeftColor: StatusFormatter.getBadgeColor(status),
+          backgroundColor: "#fff",
+        },
+      ],
+      [status]
+    );
+
+    return (
+      <Pressable onPress={handlePress} style={containerStyle}>
+        <Text style={styles.bankText}>
+          {formatBankName(sender_bank)} ➔ {formatBankName(beneficiary_bank)}
+        </Text>
+
+        <View style={styles.row}>
+          <Text style={styles.name}>{beneficiary_name.toUpperCase()}</Text>
+          <View
             style={[
-              styles.statusText,
-              { color: StatusFormatter.getTextColor(status) },
+              styles.statusBox,
+              {
+                backgroundColor: statusColors.background,
+                borderColor: statusColors.border,
+              },
             ]}
           >
-            {StatusFormatter.translate(status)}
-          </Text>
+            <Text style={[styles.statusText, { color: statusColors.text }]}>
+              {translatedStatus}
+            </Text>
+          </View>
         </View>
-      </View>
-      <View style={styles.rowSub}>
-        <Text style={styles.amount}>{`Rp${amount.toLocaleString(
-          "id-ID"
-        )} • `}</Text>
-        <Text style={styles.date}>{formatIndonesianDate(created_at)}</Text>
-      </View>
-    </Pressable>
-  );
-};
+
+        <View style={styles.row}>
+          <Text style={styles.amount}>{formattedAmount}</Text>
+          <Text style={styles.date}>{` • ${formattedDate}`}</Text>
+        </View>
+      </Pressable>
+    );
+  },
+  (prev, next) => prev.id === next.id
+);
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
     marginHorizontal: 8,
     borderRadius: 6,
     padding: 14,
     marginBottom: 8,
-    backgroundColor: "#fff",
     borderLeftWidth: 6,
   },
   row: {
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-  },
-  rowSub: {
-    flexDirection: "row",
-    alignItems: "center",
+    marginTop: 8,
   },
   bankText: {
     fontWeight: "bold",
     fontSize: 16,
     color: "#000",
   },
+  baseText: {
+    fontWeight: "500",
+    fontSize: 14,
+    color: "#000",
+  },
   name: {
+    flexShrink: 1,
+    marginRight: 8,
     fontWeight: "500",
     fontSize: 14,
     color: "#000",
   },
   amount: {
+    flex: 1,
     fontWeight: "500",
     fontSize: 14,
     color: "#000",
   },
   date: {
+    flexShrink: 0,
     fontWeight: "500",
     fontSize: 14,
     color: "#000",
@@ -101,11 +143,12 @@ const styles = StyleSheet.create({
     paddingHorizontal: 8,
     paddingVertical: 4,
     borderWidth: 1,
+    minWidth: 80,
+    alignItems: "center",
   },
   statusText: {
     fontWeight: "bold",
     fontSize: 14,
-    color: "#fff",
   },
 });
 

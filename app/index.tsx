@@ -11,22 +11,33 @@ import {
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import SortDialog from "@/components/SortDialog";
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@/redux/store";
 import {
   fetchTransactions,
   setSortOption,
   setSearchQuery,
+  selectDisplayedTransactions,
 } from "@/features/transactions/transactionsSlice";
 import TransactionItem from "@/components/TransactionItem";
 import { EvilIcons, MaterialCommunityIcons } from "@expo/vector-icons";
+import { shallowEqual } from "react-redux";
+import { Transaction } from "@/features/transactions/types";
 
 export default function TransactionList() {
   const dispatch = useDispatch<AppDispatch>();
-  const { displayedData, status, error, sortOption } = useSelector(
-    (state: RootState) => state.transactions
+  const { status, error, sortOption } = useSelector(
+    (state: RootState) => ({
+      displayedData: state.transactions.displayedData,
+      status: state.transactions.status,
+      error: state.transactions.error,
+      sortOption: state.transactions.sortOption,
+      searchQuery: state.transactions.searchQuery,
+    }),
+    shallowEqual
   );
+  const displayedData = useSelector(selectDisplayedTransactions);
 
   const [localSearchQuery, setLocalSearchQuery] = useState("");
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
@@ -34,122 +45,74 @@ export default function TransactionList() {
   const [sortModalVisible, setSortModalVisible] = useState(false);
 
   useEffect(() => {
-    return () => {
-      if (timeoutRef.current) {
-        clearTimeout(timeoutRef.current);
-      }
-    };
-  }, []);
-
-  useEffect(() => {
     dispatch(fetchTransactions());
-  }, []);
+    return () => {
+      timeoutRef.current && clearTimeout(timeoutRef.current);
+    };
+  }, [dispatch]);
 
-  const onRefresh = async () => {
+  const onRefresh = useCallback(async () => {
     setRefreshing(true);
     await dispatch(fetchTransactions());
     setRefreshing(false);
-  };
+  }, [dispatch]);
 
-  const handleSearchChange = (text: string) => {
-    setLocalSearchQuery(text);
+  const handleSearchChange = useCallback(
+    (text: string) => {
+      setLocalSearchQuery(text);
+      timeoutRef.current && clearTimeout(timeoutRef.current);
 
-    if (timeoutRef.current) {
-      clearTimeout(timeoutRef.current);
-    }
+      if (text.length < 3) {
+        dispatch(setSearchQuery(""));
+        return;
+      }
 
-    if (text.length < 3) {
-      dispatch(setSearchQuery(""));
-      return;
-    }
+      timeoutRef.current = setTimeout(() => {
+        dispatch(setSearchQuery(text));
+      }, 300);
+    },
+    [dispatch]
+  );
 
-    timeoutRef.current = setTimeout(() => {
-      dispatch(setSearchQuery(text));
-    }, 300);
-  };
+  const renderTransactionItem = useCallback(
+    ({ item }: { item: Transaction }) => <TransactionItem {...item} />,
+    []
+  );
 
   if (status === "loading")
-    return <ActivityIndicator size="large" style={{ marginTop: 50 }} />;
-  if (status === "failed") return <Text>Error: {error}</Text>;
-
-  const emptyList = () => {
-    return (
-      <View style={styles.emptyContainer}>
-        <Image
-          source={require("@/assets/images/empty-trx.png")}
-          style={styles.emptyImage}
-          resizeMode="contain"
-        />
-        <Text
-          style={styles.emptyTitle}
-        >{`Kami tidak bisa menemukan "${localSearchQuery}"`}</Text>
-        <Text style={styles.emptySubtitle}>
-          Mohon cek lagi ejaannya atau ganti dengan nama, bank, atau nominal
-          lain.
-        </Text>
-      </View>
-    );
-  };
+    return <ActivityIndicator size="large" style={styles.loader} />;
+  if (status === "failed")
+    return <Text style={styles.error}>Error: {error}</Text>;
 
   return (
-    <SafeAreaView
-      style={{ flex: 1, backgroundColor: "#F5FAF8", paddingTop: 16 }}
-    >
-      <View
-        style={{
-          flexDirection: "row",
-          justifyContent: "space-between",
-          alignItems: "center",
-          backgroundColor: "#fff",
-          marginHorizontal: 8,
-          padding: 8,
-          borderRadius: 6,
-          marginBottom: 12,
-        }}
-      >
-        <View
-          style={{
-            flex: 1,
-            flexDirection: "row",
-            alignItems: "center",
-          }}
-        >
+    <SafeAreaView style={styles.safeArea}>
+      <View style={styles.headerContainer}>
+        <View style={styles.searchContainer}>
           <EvilIcons
             name="search"
             size={24}
             color="#A3A3A3"
-            style={{ marginRight: 4 }}
+            style={styles.searchIcon}
           />
           <TextInput
             placeholder="Cari nama, bank, atau nominal"
             placeholderTextColor="#888"
-            style={{
-              flex: 1,
-              height: 40,
-              color: "#A3A3A3",
-              fontSize: 12,
-              fontWeight: "500",
-            }}
-            onChangeText={(text: string) => {
-              if (displayedData.length === 0 && localSearchQuery.length === 0) {
-                return;
-              }
-              handleSearchChange(text);
-            }}
+            style={styles.searchInput}
+            onChangeText={handleSearchChange}
             value={localSearchQuery}
+            returnKeyType="search"
           />
         </View>
         <Pressable
-          style={{ flexDirection: "row", alignItems: "center" }}
+          style={styles.sortButton}
           onPress={() => setSortModalVisible(true)}
           disabled={displayedData.length === 0}
         >
           <Text
-            style={{
-              color: displayedData.length === 0 ? "#cecece" : "#F26C39",
-              fontWeight: "bold",
-              fontSize: 14,
-            }}
+            style={[
+              styles.sortButtonText,
+              displayedData.length === 0 && styles.disabledSort,
+            ]}
           >
             URUTKAN
           </Text>
@@ -161,18 +124,31 @@ export default function TransactionList() {
         </Pressable>
       </View>
 
-      {displayedData.length === 0 && localSearchQuery.length > 0 ? (
-        emptyList()
-      ) : (
-        <FlatList
-          data={displayedData}
-          keyExtractor={(item) => item.id}
-          refreshControl={
-            <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-          }
-          renderItem={({ item }) => <TransactionItem {...item} />}
-        />
-      )}
+      <FlatList
+        data={displayedData}
+        keyExtractor={(item) => item.id}
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+        }
+        renderItem={renderTransactionItem}
+        ListEmptyComponent={
+          <View style={styles.emptyContainer}>
+            <Image
+              source={require("@/assets/images/empty-trx.png")}
+              style={styles.emptyImage}
+              resizeMode="contain"
+            />
+            <Text style={styles.emptyTitle}>
+              {`Kami tidak bisa menemukan "${localSearchQuery}"`}
+            </Text>
+            <Text style={styles.emptySubtitle}>
+              Mohon cek lagi ejaannya atau ganti dengan nama, bank, atau nominal
+              lain.
+            </Text>
+          </View>
+        }
+        initialNumToRender={10}
+      />
 
       <SortDialog
         visible={sortModalVisible}
@@ -188,14 +164,46 @@ export default function TransactionList() {
 }
 
 const styles = StyleSheet.create({
-  container: {
+  safeArea: {
     flex: 1,
-    padding: 16,
+    backgroundColor: "#F5FAF8",
   },
-  item: {
-    padding: 20,
-    borderBottomWidth: 1,
-    borderBottomColor: "#ccc",
+  headerContainer: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    backgroundColor: "#fff",
+    marginHorizontal: 8,
+    padding: 8,
+    borderRadius: 6,
+    marginBottom: 12,
+  },
+  searchContainer: {
+    flex: 1,
+    flexDirection: "row",
+    alignItems: "center",
+  },
+  searchIcon: {
+    marginRight: 4,
+  },
+  searchInput: {
+    flex: 1,
+    height: 40,
+    color: "#A3A3A3",
+    fontSize: 12,
+    fontWeight: "500",
+  },
+  sortButton: {
+    flexDirection: "row",
+    alignItems: "center",
+  },
+  sortButtonText: {
+    color: "#F26C39",
+    fontWeight: "bold",
+    fontSize: 14,
+  },
+  disabledSort: {
+    color: "#cecece",
   },
   emptyContainer: {
     flex: 1,
@@ -219,5 +227,13 @@ const styles = StyleSheet.create({
     fontSize: 14,
     textAlign: "center",
     color: "#333",
+  },
+  loader: {
+    marginTop: 50,
+  },
+  error: {
+    textAlign: "center",
+    marginTop: 20,
+    color: "red",
   },
 });
