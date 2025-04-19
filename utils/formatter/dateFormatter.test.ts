@@ -1,4 +1,4 @@
-import { formatIndonesianDate } from ".";
+import { formatIndonesianDate } from "..";
 
 describe("formatIndonesianDate", () => {
   const mockConsoleError = jest

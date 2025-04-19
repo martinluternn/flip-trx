@@ -20,6 +20,7 @@ import {
   IconTextButton,
   Spacer,
 } from "@/components";
+import { formatCurrency } from "@/utils";
 
 export default function DetailPage() {
   const { id } = useLocalSearchParams();
@@ -104,7 +105,7 @@ export default function DetailPage() {
           leftLabel={transaction.beneficiary_name.toUpperCase()}
           leftValue={transaction.account_number}
           rightLabel="NOMINAL"
-          rightValue={`Rp${transaction.amount?.toLocaleString("id-ID")}`}
+          rightValue={formatCurrency(transaction.amount)}
           textColor={blackColor}
         />
         <BankTransferDetail

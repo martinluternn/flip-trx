@@ -18,7 +18,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@/redux/store";
 import { EvilIcons } from "@expo/vector-icons";
 import { shallowEqual } from "react-redux";
-import { SORT_MAP_OPTIONS, Transaction } from "@/redux/transactions/types";
+import { SORT_MAP_OPTIONS, Transaction } from "@/redux/transactions/types/transactionsTypes";
 import {
   fetchTransactions,
   selectDisplayedTransactions,
@@ -33,6 +33,7 @@ import {
   Spacer,
   TransactionItem,
 } from "@/components";
+import { getSortOptionLabel } from "@/utils";
 
 export default function TransactionList() {
   // Theme colors
@@ -138,12 +139,7 @@ export default function TransactionList() {
         </View>
         <IconTextButton
           iconName="chevron-down"
-          text={
-            sortOption === "default"
-              ? "URUTKAN"
-              : SORT_MAP_OPTIONS.find((el) => el.key === sortOption)?.label ??
-                "-"
-          }
+          text={getSortOptionLabel(SORT_MAP_OPTIONS, sortOption)}
           onPress={() => setSortModalVisible(true)}
           disabled={displayedData.length === 0}
           iconSize={30}
