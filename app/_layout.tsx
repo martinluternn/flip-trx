@@ -1,5 +1,10 @@
 import { useEffect, useCallback, useMemo } from "react";
-import { View, ActivityIndicator, Text, useColorScheme } from "react-native";
+import {
+  View,
+  ActivityIndicator,
+  useColorScheme,
+  StyleSheet,
+} from "react-native";
 import { useFonts } from "expo-font";
 import * as SplashScreen from "expo-splash-screen";
 import { Stack } from "expo-router";
@@ -8,7 +13,6 @@ import { store } from "@/redux/store";
 import type { NativeStackNavigationOptions } from "@react-navigation/native-stack";
 import { Colors } from "@/hooks";
 
-// Keep the splash screen visible while we load resources
 SplashScreen.preventAutoHideAsync();
 
 export default function RootLayout() {
@@ -16,6 +20,9 @@ export default function RootLayout() {
   const [fontsLoaded, fontError] = useFonts({
     SpaceMono: require("../assets/fonts/SpaceMono-Regular.ttf"),
   });
+
+  // Memoized styles based on color scheme
+  const styles = useMemo(() => getStyles(colorScheme), [colorScheme]);
 
   const handleLayoutRootView = useCallback(async () => {
     if (fontsLoaded || fontError) {
@@ -30,36 +37,35 @@ export default function RootLayout() {
   const screenOptions = useMemo<NativeStackNavigationOptions>(
     () => ({
       headerShown: false,
-      contentStyle: { backgroundColor: Colors[colorScheme].background },
-      animation: "fade" as const,
+      animation: "fade",
     }),
     []
   );
 
   if (!fontsLoaded && !fontError) {
     return (
-      <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-        <ActivityIndicator size="large" color={Colors[colorScheme].primaryColor} />
+      <View style={styles.loadingContainer}>
+        <ActivityIndicator size="large" color={styles.loader.color} />
       </View>
     );
   }
 
   return (
     <Provider store={store}>
-      <View style={{ flex: 1 }}>
+      <View style={styles.container}>
         <Stack screenOptions={screenOptions}>
           <Stack.Screen
             name="index"
             options={{
               title: "Transaction List",
-              animation: "default" as const,
+              animation: "default",
             }}
           />
           <Stack.Screen
             name="[id]"
             options={{
               title: "Transaction Detail",
-              animation: "slide_from_right" as const,
+              animation: "slide_from_right",
             }}
           />
         </Stack>
@@ -67,3 +73,19 @@ export default function RootLayout() {
     </Provider>
   );
 }
+
+const getStyles = (colorScheme: "light" | "dark") =>
+  StyleSheet.create({
+    container: {
+      flex: 1,
+    },
+    loadingContainer: {
+      flex: 1,
+      justifyContent: "center",
+      alignItems: "center",
+      backgroundColor: Colors[colorScheme].background,
+    },
+    loader: {
+      color: Colors[colorScheme].primaryColor,
+    },
+  });

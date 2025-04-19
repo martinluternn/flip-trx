@@ -1,14 +1,8 @@
 import { useThemeColor } from "@/hooks";
-import { SortOption } from "@/redux/transactions/types";
+import { SORT_MAP_OPTIONS, SortOption } from "@/redux";
 import React, { useCallback, memo } from "react";
-import {
-  Modal,
-  View,
-  Text,
-  StyleSheet,
-  Pressable,
-  FlatList,
-} from "react-native";
+import { Modal, View, StyleSheet, Pressable, FlatList } from "react-native";
+import OptionItem from "../OptionItem";
 
 type SortDialogProps = {
   visible: boolean;
@@ -16,14 +10,6 @@ type SortDialogProps = {
   selected: SortOption;
   onSelect: (option: SortOption) => void;
 };
-
-const OPTIONS = [
-  { key: "default", label: "URUTKAN" },
-  { key: "name-asc", label: "Nama A-Z" },
-  { key: "name-desc", label: "Nama Z-A" },
-  { key: "date-desc", label: "Tanggal Terbaru" },
-  { key: "date-asc", label: "Tanggal Terlama" },
-] as const;
 
 const SortDialog = memo(
   ({ visible, onClose, selected, onSelect }: SortDialogProps) => {
@@ -39,7 +25,7 @@ const SortDialog = memo(
     );
 
     const renderItem = useCallback(
-      ({ item }: { item: (typeof OPTIONS)[number] }) => (
+      ({ item }: { item: (typeof SORT_MAP_OPTIONS)[number] }) => (
         <OptionItem
           item={item}
           selected={selected}
@@ -57,7 +43,7 @@ const SortDialog = memo(
         >
           <View style={[styles.dialog, { backgroundColor: whiteColor }]}>
             <FlatList
-              data={OPTIONS}
+              data={SORT_MAP_OPTIONS}
               keyExtractor={(item) => item.key}
               renderItem={renderItem}
               initialNumToRender={5}
@@ -70,35 +56,6 @@ const SortDialog = memo(
   }
 );
 
-type OptionItemProps = {
-  item: (typeof OPTIONS)[number];
-  selected: SortOption;
-  onSelect: (option: SortOption) => void;
-};
-
-const OptionItem = memo(({ item, selected, onSelect }: OptionItemProps) => {
-  const primaryColor = useThemeColor("primaryColor");
-  const textPrimary = useThemeColor("textPrimary");
-
-  const handlePress = useCallback(() => {
-    onSelect(item.key);
-  }, [item.key, onSelect]);
-
-  return (
-    <Pressable style={styles.option} onPress={handlePress}>
-      <View style={[styles.radio, { borderColor: primaryColor }]}>
-        <View
-          style={[
-            styles.circle,
-            selected === item.key && { backgroundColor: primaryColor },
-          ]}
-        />
-      </View>
-      <Text style={[styles.label, { color: textPrimary }]}>{item.label}</Text>
-    </Pressable>
-  );
-});
-
 const styles = StyleSheet.create({
   backdrop: {
     flex: 1,
@@ -109,29 +66,6 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     paddingVertical: 32,
     paddingHorizontal: 24,
-  },
-  option: {
-    flexDirection: "row",
-    alignItems: "center",
-    paddingVertical: 16,
-  },
-  radio: {
-    width: 24,
-    height: 24,
-    borderRadius: 12,
-    borderWidth: 2,
-    alignItems: "center",
-    justifyContent: "center",
-    marginRight: 10,
-  },
-  circle: {
-    width: 12,
-    height: 12,
-    borderRadius: 6,
-  },
-  label: {
-    fontWeight: "500",
-    fontSize: 16,
   },
 });
 

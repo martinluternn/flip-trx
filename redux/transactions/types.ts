@@ -13,11 +13,24 @@ export interface Transaction {
 
 export interface TransactionsState {
   rawData: Transaction[];
-  displayedData: Transaction[];  
+  displayedData: Transaction[];
   status: "idle" | "loading" | "succeeded" | "failed";
   error: string | null;
   sortOption: SortOption;
   searchQuery: string;
 }
 
-export type SortOption = "default" | "name-asc" | "name-desc" | "date-asc" | "date-desc";
+export type SortOption =
+  | "default"
+  | "name-asc"
+  | "name-desc"
+  | "date-asc"
+  | "date-desc";
+
+export const SORT_MAP_OPTIONS = [
+  { key: "default", label: "URUTKAN" },
+  { key: "name-asc", label: "Nama A-Z" },
+  { key: "name-desc", label: "Nama Z-A" },
+  { key: "date-desc", label: "Tanggal Terbaru" },
+  { key: "date-asc", label: "Tanggal Terlama" },
+] as const;

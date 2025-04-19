@@ -2,37 +2,59 @@ import {
   FlatList,
   View,
   StyleSheet,
-  Pressable,
-  Text,
   ActivityIndicator,
   RefreshControl,
   TextInput,
-  Image,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import SortDialog from "@/components/SortDialog";
-import React, { useState, useEffect, useRef, useCallback } from "react";
+import React, {
+  useState,
+  useEffect,
+  useRef,
+  useCallback,
+  useMemo,
+} from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@/redux/store";
-import TransactionItem from "@/components/TransactionItem";
-import { EvilIcons, MaterialCommunityIcons } from "@expo/vector-icons";
+import { EvilIcons } from "@expo/vector-icons";
 import { shallowEqual } from "react-redux";
-import { Transaction } from "@/redux/transactions/types";
+import { SORT_MAP_OPTIONS, Transaction } from "@/redux/transactions/types";
 import {
   fetchTransactions,
   selectDisplayedTransactions,
   setSearchQuery,
   setSortOption,
-} from "@/redux/transactions";
+} from "@/redux";
 import { useThemeColor } from "@/hooks";
+import {
+  EmptyView,
+  IconTextButton,
+  SortDialog,
+  Spacer,
+  TransactionItem,
+} from "@/components";
 
 export default function TransactionList() {
+  // Theme colors
   const primaryColor = useThemeColor("primaryColor");
   const textPrimary = useThemeColor("textPrimary");
   const textSecondary = useThemeColor("textSecondary");
   const disabledColor = useThemeColor("disabled");
   const errorColor = useThemeColor("failed");
   const whiteColor = useThemeColor("white");
+
+  // Memoized styles
+  const styles = useMemo(
+    () => createStyles(primaryColor, textPrimary, whiteColor),
+    [
+      primaryColor,
+      textPrimary,
+      textSecondary,
+      disabledColor,
+      errorColor,
+      whiteColor,
+    ]
+  );
 
   const dispatch = useDispatch<AppDispatch>();
   const { status, error, sortOption } = useSelector(
@@ -46,7 +68,6 @@ export default function TransactionList() {
     shallowEqual
   );
   const displayedData = useSelector(selectDisplayedTransactions);
-
   const [localSearchQuery, setLocalSearchQuery] = useState("");
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
   const [refreshing, setRefreshing] = useState(false);
@@ -69,12 +90,10 @@ export default function TransactionList() {
     (text: string) => {
       setLocalSearchQuery(text);
       timeoutRef.current && clearTimeout(timeoutRef.current);
-
       if (text.length < 3) {
         dispatch(setSearchQuery(""));
         return;
       }
-
       timeoutRef.current = setTimeout(() => {
         dispatch(setSearchQuery(text));
       }, 300);
@@ -88,52 +107,54 @@ export default function TransactionList() {
   );
 
   if (status === "loading")
-    return <ActivityIndicator size="large" style={styles.loader} />;
-  if (status === "failed")
     return (
-      <Text style={[styles.error, { color: errorColor }]}>Error: {error}</Text>
+      <>
+        <Spacer size={"xxl"} />
+        <Spacer size={"sm"} />
+        <ActivityIndicator size="large" color={primaryColor} />
+      </>
     );
+  if (status === "failed")
+    return <EmptyView title={`Terjadi kesalahan`} subtitle={error ?? "-"} />;
 
   return (
     <SafeAreaView style={styles.safeArea}>
-      <View style={[styles.headerContainer, { backgroundColor: whiteColor }]}>
+      <View style={styles.headerContainer}>
         <View style={styles.searchContainer}>
           <EvilIcons
             name="search"
             size={24}
             color={localSearchQuery.length > 0 ? textPrimary : textSecondary}
-            style={styles.searchIcon}
           />
+          <Spacer size={"xs"} horizontal />
           <TextInput
             placeholder="Cari nama, bank, atau nominal"
             placeholderTextColor={textSecondary}
-            style={[styles.searchInput, { color: textPrimary }]}
+            style={styles.searchInput}
             onChangeText={handleSearchChange}
             value={localSearchQuery}
             returnKeyType="search"
           />
         </View>
-        <Pressable
-          style={styles.sortButton}
+        <IconTextButton
+          iconName="chevron-down"
+          text={
+            sortOption === "default"
+              ? "URUTKAN"
+              : SORT_MAP_OPTIONS.find((el) => el.key === sortOption)?.label ??
+                "-"
+          }
           onPress={() => setSortModalVisible(true)}
           disabled={displayedData.length === 0}
-        >
-          <Text
-            style={[
-              styles.sortButtonText,
-              displayedData.length === 0 ? { color: disabledColor } : { color: primaryColor },
-            ]}
-          >
-            URUTKAN
-          </Text>
-          <MaterialCommunityIcons
-            name="chevron-down"
-            size={30}
-            color={displayedData.length === 0 ? disabledColor : primaryColor}
-          />
-        </Pressable>
+          iconSize={30}
+          iconColor={primaryColor}
+          disabledColor={disabledColor}
+          textStyle={styles.sortButtonText}
+          containerStyle={styles.sortButton}
+        />
       </View>
-
+      <Spacer size={"sm"} />
+      <Spacer size={"xs"} />
       <FlatList
         data={displayedData}
         keyExtractor={(item) => item.id}
@@ -142,26 +163,14 @@ export default function TransactionList() {
         }
         renderItem={renderTransactionItem}
         ListEmptyComponent={
-          <View
-            style={[styles.emptyContainer, { backgroundColor: whiteColor }]}
-          >
-            <Image
-              source={require("@/assets/images/empty-trx.png")}
-              style={styles.emptyImage}
-              resizeMode="contain"
-            />
-            <Text style={styles.emptyTitle}>
-              {`Kami tidak bisa menemukan "${localSearchQuery}"`}
-            </Text>
-            <Text style={[styles.emptySubtitle, { color: textPrimary }]}>
-              Mohon cek lagi ejaannya atau ganti dengan nama, bank, atau nominal
-              lain.
-            </Text>
-          </View>
+          <EmptyView
+            title={`Kami tidak bisa menemukan "${localSearchQuery}"`}
+            subtitle="Mohon cek lagi ejaannya atau ganti dengan nama, bank, atau nominal
+              lain."
+          />
         }
         initialNumToRender={10}
       />
-
       <SortDialog
         visible={sortModalVisible}
         onClose={() => setSortModalVisible(false)}
@@ -175,68 +184,43 @@ export default function TransactionList() {
   );
 }
 
-const styles = StyleSheet.create({
-  safeArea: {
-    flex: 1,
-  },
-  headerContainer: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-    marginHorizontal: 8,
-    padding: 8,
-    borderRadius: 6,
-    marginBottom: 12,
-  },
-  searchContainer: {
-    flex: 1,
-    flexDirection: "row",
-    alignItems: "center",
-  },
-  searchIcon: {
-    marginRight: 4,
-  },
-  searchInput: {
-    flex: 1,
-    height: 40,
-    fontSize: 12,
-    fontWeight: "500",
-  },
-  sortButton: {
-    flexDirection: "row",
-    alignItems: "center",
-  },
-  sortButtonText: {
-    fontWeight: "bold",
-    fontSize: 14,
-  },
-  emptyContainer: {
-    flex: 1,
-    alignItems: "center",
-    justifyContent: "center",
-    paddingHorizontal: 20,
-    paddingVertical: 60,
-  },
-  emptyImage: {
-    width: "100%",
-    height: 200,
-    marginBottom: 20,
-  },
-  emptyTitle: {
-    fontWeight: "bold",
-    fontSize: 16,
-    textAlign: "center",
-    marginBottom: 10,
-  },
-  emptySubtitle: {
-    fontSize: 14,
-    textAlign: "center",
-  },
-  loader: {
-    marginTop: 50,
-  },
-  error: {
-    textAlign: "center",
-    marginTop: 20,
-  },
-});
+const createStyles = (
+  primaryColor: string,
+  textPrimary: string,
+  whiteColor: string
+) =>
+  StyleSheet.create({
+    safeArea: {
+      flex: 1,
+    },
+    headerContainer: {
+      flexDirection: "row",
+      justifyContent: "space-between",
+      alignItems: "center",
+      marginHorizontal: 8,
+      padding: 8,
+      borderRadius: 6,
+      backgroundColor: whiteColor,
+    },
+    searchContainer: {
+      flex: 1,
+      flexDirection: "row",
+      alignItems: "center",
+    },
+    searchInput: {
+      flex: 1,
+      height: 40,
+      fontSize: 12,
+      fontWeight: "500",
+      color: textPrimary,
+    },
+    sortButton: {
+      flexDirection: "row",
+      alignItems: "center",
+    },
+    sortButtonText: {
+      fontWeight: "bold",
+      fontSize: 14,
+      color: primaryColor,
+    },
+  });

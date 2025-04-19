@@ -7,7 +7,7 @@ import {
 import axios from "axios";
 import type { RootState } from "@/redux/store";
 import type { AxiosError } from "axios/index";
-import { SortOption, Transaction, TransactionsState } from ".";
+import { SortOption, Transaction, TransactionsState } from "..";
 
 // Memoized selector for filtered/sorted data
 const selectRawData = (state: RootState) => state.transactions.rawData;

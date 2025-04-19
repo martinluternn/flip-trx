@@ -1,5 +1,5 @@
 import { useColorScheme } from "react-native";
-import { Colors } from "@/hooks/Colors";
+import { Colors } from "./Colors";
 
 type ColorName = keyof typeof Colors.light;
 

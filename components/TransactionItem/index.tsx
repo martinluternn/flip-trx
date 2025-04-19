@@ -1,16 +1,11 @@
 import { useThemeColor } from "@/hooks";
-import { Transaction } from "@/redux/transactions/types";
-import { formatBankName, formatIndonesianDate, StatusFormatter } from "@/utils";
+import { Transaction } from "@/redux";
+import { formatIndonesianDate, StatusFormatter } from "@/utils";
 import { router } from "expo-router";
 import React, { useMemo, useCallback, memo } from "react";
-import {
-  View,
-  Text,
-  StyleSheet,
-  Pressable,
-  StyleProp,
-  ViewStyle,
-} from "react-native";
+import { View, Text, StyleSheet, Pressable } from "react-native";
+import Spacer from "../Spacer";
+import BankTransferTitle from "../BankTransferTitle";
 
 const TransactionItem: React.FC<Transaction> = memo(
   ({
@@ -53,45 +48,60 @@ const TransactionItem: React.FC<Transaction> = memo(
       [status]
     );
 
-    const containerStyle = useMemo<StyleProp<ViewStyle>>(
-      () => [
-        styles.container,
-        {
-          borderLeftColor: StatusFormatter.getBadgeColor(status),
-          backgroundColor: whiteColor,
-        },
-      ],
-      [status]
+    const dynamicStyles = useMemo(
+      () =>
+        StyleSheet.create({
+          container: {
+            borderLeftColor: StatusFormatter.getBadgeColor(status),
+            backgroundColor: whiteColor,
+          },
+          text: {
+            color: blackColor,
+          },
+          statusBox: {
+            backgroundColor: statusColors.background,
+            borderColor: statusColors.border,
+          },
+          statusText: {
+            color: statusColors.text,
+          },
+        }),
+      [status, whiteColor, blackColor, statusColors]
     );
 
     return (
-      <Pressable onPress={handlePress} style={containerStyle}>
-        <Text style={[styles.bankText, { color: blackColor }]}>
-          {formatBankName(sender_bank)} ➔ {formatBankName(beneficiary_bank)}
-        </Text>
-
-        <View style={styles.row}>
-          <Text style={[styles.name, { color: blackColor }]}>{beneficiary_name.toUpperCase()}</Text>
-          <View
-            style={[
-              styles.statusBox,
-              {
-                backgroundColor: statusColors.background,
-                borderColor: statusColors.border,
-              },
-            ]}
-          >
-            <Text style={[styles.statusText, { color: statusColors.text }]}>
-              {translatedStatus}
+      <>
+        <Pressable
+          onPress={handlePress}
+          style={[styles.container, dynamicStyles.container]}
+        >
+          <BankTransferTitle
+            beneficiaryBank={beneficiary_bank}
+            senderBank={sender_bank}
+          />
+          <View style={styles.row}>
+            <Text style={[styles.name, dynamicStyles.text]}>
+              {beneficiary_name.toUpperCase()}
             </Text>
+            <Spacer size={"sm"} horizontal />
+            <View style={[styles.statusBox, dynamicStyles.statusBox]}>
+              <Text style={[styles.statusText, dynamicStyles.statusText]}>
+                {translatedStatus}
+              </Text>
+            </View>
           </View>
-        </View>
 
-        <View style={styles.subrow}>
-          <Text style={[styles.amount, { color: blackColor }]}>{formattedAmount}</Text>
-          <Text style={[styles.date, { color: blackColor }]}>{` • ${formattedDate}`}</Text>
-        </View>
-      </Pressable>
+          <View style={styles.subrow}>
+            <Text style={[styles.amount, dynamicStyles.text]}>
+              {formattedAmount}
+            </Text>
+            <Text
+              style={[styles.date, dynamicStyles.text]}
+            >{` • ${formattedDate}`}</Text>
+          </View>
+        </Pressable>
+        <Spacer size={"sm"} />
+      </>
     );
   },
   (prev, next) => prev.id === next.id
@@ -102,7 +112,6 @@ const styles = StyleSheet.create({
     marginHorizontal: 8,
     borderRadius: 6,
     padding: 14,
-    marginBottom: 8,
     borderLeftWidth: 6,
   },
   row: {
@@ -114,13 +123,8 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
   },
-  bankText: {
-    fontWeight: "bold",
-    fontSize: 16,
-  },
   name: {
     flexShrink: 1,
-    marginRight: 8,
     fontWeight: "500",
     fontSize: 14,
   },
