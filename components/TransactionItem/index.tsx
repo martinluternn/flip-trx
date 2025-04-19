@@ -85,7 +85,7 @@ const TransactionItem: React.FC<Transaction> = memo(
           </View>
         </View>
 
-        <View style={styles.row}>
+        <View style={styles.subrow}>
           <Text style={styles.amount}>{formattedAmount}</Text>
           <Text style={styles.date}>{` • ${formattedDate}`}</Text>
         </View>
@@ -109,6 +109,11 @@ const styles = StyleSheet.create({
     alignItems: "center",
     marginTop: 8,
   },
+  subrow: {
+    flexDirection: "row",
+    alignItems: "center",
+    marginTop: 8,
+  },
   bankText: {
     fontWeight: "bold",
     fontSize: 16,
@@ -127,7 +132,6 @@ const styles = StyleSheet.create({
     color: "#000",
   },
   amount: {
-    flex: 1,
     fontWeight: "500",
     fontSize: 14,
     color: "#000",
