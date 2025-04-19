@@ -1,7 +1,6 @@
-import { Transaction } from "@/features/transactions/types";
-import { formatBankName } from "@/utils/bankFormatter";
-import { formatIndonesianDate } from "@/utils/dateFormatter";
-import { StatusFormatter } from "@/utils/statusFormatter";
+import { useThemeColor } from "@/hooks";
+import { Transaction } from "@/redux/transactions/types";
+import { formatBankName, formatIndonesianDate, StatusFormatter } from "@/utils";
 import { router } from "expo-router";
 import React, { useMemo, useCallback, memo } from "react";
 import {
@@ -23,6 +22,9 @@ const TransactionItem: React.FC<Transaction> = memo(
     created_at,
     status,
   }) => {
+    const whiteColor = useThemeColor("white");
+    const blackColor = useThemeColor("black");
+
     const handlePress = useCallback(() => {
       router.push(`/${encodeURIComponent(id)}`);
     }, [id]);
@@ -56,7 +58,7 @@ const TransactionItem: React.FC<Transaction> = memo(
         styles.container,
         {
           borderLeftColor: StatusFormatter.getBadgeColor(status),
-          backgroundColor: "#fff",
+          backgroundColor: whiteColor,
         },
       ],
       [status]
@@ -64,12 +66,12 @@ const TransactionItem: React.FC<Transaction> = memo(
 
     return (
       <Pressable onPress={handlePress} style={containerStyle}>
-        <Text style={styles.bankText}>
+        <Text style={[styles.bankText, { color: blackColor }]}>
           {formatBankName(sender_bank)} ➔ {formatBankName(beneficiary_bank)}
         </Text>
 
         <View style={styles.row}>
-          <Text style={styles.name}>{beneficiary_name.toUpperCase()}</Text>
+          <Text style={[styles.name, { color: blackColor }]}>{beneficiary_name.toUpperCase()}</Text>
           <View
             style={[
               styles.statusBox,
@@ -86,8 +88,8 @@ const TransactionItem: React.FC<Transaction> = memo(
         </View>
 
         <View style={styles.subrow}>
-          <Text style={styles.amount}>{formattedAmount}</Text>
-          <Text style={styles.date}>{` • ${formattedDate}`}</Text>
+          <Text style={[styles.amount, { color: blackColor }]}>{formattedAmount}</Text>
+          <Text style={[styles.date, { color: blackColor }]}>{` • ${formattedDate}`}</Text>
         </View>
       </Pressable>
     );
@@ -107,40 +109,29 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-    marginTop: 8,
   },
   subrow: {
     flexDirection: "row",
     alignItems: "center",
-    marginTop: 8,
   },
   bankText: {
     fontWeight: "bold",
     fontSize: 16,
-    color: "#000",
-  },
-  baseText: {
-    fontWeight: "500",
-    fontSize: 14,
-    color: "#000",
   },
   name: {
     flexShrink: 1,
     marginRight: 8,
     fontWeight: "500",
     fontSize: 14,
-    color: "#000",
   },
   amount: {
     fontWeight: "500",
     fontSize: 14,
-    color: "#000",
   },
   date: {
     flexShrink: 0,
     fontWeight: "500",
     fontSize: 14,
-    color: "#000",
   },
   statusBox: {
     borderRadius: 6,

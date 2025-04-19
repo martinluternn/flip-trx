@@ -1,13 +1,27 @@
-import { View, Text, StyleSheet, Pressable, Alert } from "react-native";
+import {
+  View,
+  Text,
+  StyleSheet,
+  Pressable,
+  Alert,
+  SafeAreaView,
+} from "react-native";
 import { useLocalSearchParams, useRouter } from "expo-router";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import * as Clipboard from "expo-clipboard";
 import { useSelector } from "react-redux";
-import { formatBankName } from "@/utils/bankFormatter";
 import React, { useCallback, useMemo } from "react";
-import { selectDisplayedTransactions } from "@/features/transactions/transactionsSlice";
+import { formatBankName } from "@/utils";
+import { selectDisplayedTransactions } from "@/redux/transactions";
+import { useThemeColor } from "@/hooks";
 
 export default function DetailPage() {
+  const primaryColor = useThemeColor("primaryColor");
+  const backgroundColor = useThemeColor("background");
+  const textSecondary = useThemeColor("textSecondary");
+  const whiteColor = useThemeColor("white");
+  const blackColor = useThemeColor("black");
+
   const { id } = useLocalSearchParams();
   const router = useRouter();
   const transaction = useSelector(selectDisplayedTransactions).find(
@@ -31,15 +45,17 @@ export default function DetailPage() {
 
   if (!transaction) {
     return (
-      <View style={styles.notFoundContainer}>
-        <Text style={styles.notFoundText}>Transaksi tidak ditemukan</Text>
+      <View style={[styles.notFoundContainer, { backgroundColor }]}>
+        <Text style={[styles.notFoundText, { color: textSecondary }]}>
+          Transaksi tidak ditemukan
+        </Text>
       </View>
     );
   }
 
   return (
-    <View style={styles.container}>
-      <View style={styles.headerContainer}>
+    <SafeAreaView style={styles.container}>
+      <View style={[styles.headerContainer, { backgroundColor: whiteColor }]}>
         <View style={styles.rowHeader}>
           <Text style={styles.transactionId}>
             ID TRANSAKSI: #{transaction.id}
@@ -48,7 +64,7 @@ export default function DetailPage() {
             <MaterialCommunityIcons
               name="content-copy"
               size={20}
-              color="#FD6345"
+              color={primaryColor}
               style={styles.mirrorIcon}
             />
           </Pressable>
@@ -57,13 +73,15 @@ export default function DetailPage() {
         <View style={styles.titleRow}>
           <Text style={styles.sectionTitle}>DETAIL TRANSAKSI</Text>
           <Pressable onPress={router.back}>
-            <Text style={styles.closeText}>Tutup</Text>
+            <Text style={[styles.closeText, { color: primaryColor }]}>
+              Tutup
+            </Text>
           </Pressable>
         </View>
       </View>
 
-      <View style={styles.infoBox}>
-        <Text style={styles.transferType}>
+      <View style={[styles.infoBox, { backgroundColor: whiteColor }]}>
+        <Text style={[styles.transferType, { color: blackColor }]}>
           {formatBankName(transaction.sender_bank)} ➔{" "}
           {formatBankName(transaction.beneficiary_bank)}
         </Text>
@@ -82,9 +100,12 @@ export default function DetailPage() {
           rightValue={transaction.unique_code}
         />
 
-        <DetailRow leftLabel="WAKTU DIBUAT" leftValue={formattedDate} />
+        <DetailRow
+          leftLabel="WAKTU DIBUAT"
+          leftValue={formattedDate}
+        />
       </View>
-    </View>
+    </SafeAreaView>
   );
 }
 
@@ -98,39 +119,42 @@ const DetailRow = ({
   leftValue?: string | number;
   rightLabel?: string;
   rightValue?: string | number;
-}) => (
-  <View style={styles.detailRow}>
-    <View style={styles.column}>
-      <Text style={styles.label}>{leftLabel}</Text>
-      <Text style={styles.value}>{leftValue}</Text>
-    </View>
-    {rightLabel && (
-      <View style={styles.rightColumn}>
-        <Text style={styles.label}>{rightLabel}</Text>
-        <Text style={styles.value}>{rightValue}</Text>
+}) => {
+  const blackColor = useThemeColor("black");
+  return (
+    <View style={styles.detailRow}>
+      <View style={styles.column}>
+        <Text style={[styles.label, { color: blackColor }]}>{leftLabel}</Text>
+        <Text style={[styles.value, { color: blackColor }]}>{leftValue}</Text>
       </View>
-    )}
-  </View>
-);
+      {rightLabel && (
+        <View style={styles.rightColumn}>
+          <Text style={[styles.label, { color: blackColor }]}>
+            {rightLabel}
+          </Text>
+          <Text style={[styles.value, { color: blackColor }]}>
+            {rightValue}
+          </Text>
+        </View>
+      )}
+    </View>
+  );
+};
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#F5FAF8",
   },
   headerContainer: {
-    backgroundColor: "#fff",
     paddingHorizontal: 24,
   },
   notFoundContainer: {
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "#F5FAF8",
   },
   notFoundText: {
     fontSize: 16,
-    color: "#666",
   },
   transactionId: {
     fontWeight: "bold",
@@ -142,12 +166,10 @@ const styles = StyleSheet.create({
     fontSize: 14,
   },
   closeText: {
-    color: "#FD6345",
     fontWeight: "600",
     fontSize: 14,
   },
   infoBox: {
-    backgroundColor: "#fff",
     marginTop: 6,
     padding: 24,
     borderRadius: 8,
@@ -155,7 +177,6 @@ const styles = StyleSheet.create({
   transferType: {
     fontWeight: "bold",
     fontSize: 16,
-    color: "#000",
   },
   rowHeader: {
     flexDirection: "row",
@@ -183,12 +204,10 @@ const styles = StyleSheet.create({
   label: {
     fontWeight: "bold",
     fontSize: 14,
-    color: "#000",
     marginBottom: 4,
   },
   value: {
     fontSize: 14,
-    color: "#333",
   },
   mirrorIcon: {
     transform: [{ scaleX: -1 }],

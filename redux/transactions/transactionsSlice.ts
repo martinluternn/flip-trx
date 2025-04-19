@@ -5,9 +5,9 @@ import {
   createSelector,
 } from "@reduxjs/toolkit";
 import axios from "axios";
-import { SortOption, Transaction, TransactionsState } from "./types";
 import type { RootState } from "@/redux/store";
 import type { AxiosError } from "axios/index";
+import { SortOption, Transaction, TransactionsState } from ".";
 
 // Memoized selector for filtered/sorted data
 const selectRawData = (state: RootState) => state.transactions.rawData;

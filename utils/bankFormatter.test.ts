@@ -1,4 +1,4 @@
-import { formatBankName } from "./bankFormatter";
+import { formatBankName } from ".";
 
 describe("formatBankName", () => {
   it("should return empty string for empty input", () => {
