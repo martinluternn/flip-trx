@@ -1,6 +1,27 @@
+import React, { memo } from "react";
+import { View, StyleProp, ViewStyle } from "react-native";
 import ThemeColor from "@/themes/color";
-import { View } from "react-native";
 
-export default function Divider() {
-  return <View style={{ height: 1, backgroundColor: ThemeColor.divider }} />;
-}
+type DividerProps = {
+  horizontal?: boolean;
+  thickness?: number;
+  color?: string;
+  style?: StyleProp<ViewStyle>;
+};
+
+const Divider = memo(({
+  horizontal = true,
+  thickness = 1,
+  color = ThemeColor.divider,
+  style,
+}: DividerProps) => {
+  const baseStyle: ViewStyle = {
+    [horizontal ? "height" : "width"]: thickness,
+    backgroundColor: color,
+    alignSelf: horizontal ? "stretch" : "center",
+  };
+
+  return <View style={[baseStyle, style]} />;
+});
+
+export default Divider;

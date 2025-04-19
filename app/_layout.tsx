@@ -1,41 +1,67 @@
+import { useEffect, useCallback, useMemo } from "react";
+import { View, ActivityIndicator, Text } from "react-native";
 import { useFonts } from "expo-font";
 import * as SplashScreen from "expo-splash-screen";
-import { useEffect } from "react";
-import "react-native-reanimated";
 import { Stack } from "expo-router";
 import { Provider } from "react-redux";
 import { store } from "@/redux/store";
+import type { NativeStackNavigationOptions } from "@react-navigation/native-stack";
 
-// Prevent the splash screen from auto-hiding before asset loading is complete.
+// Keep the splash screen visible while we load resources
 SplashScreen.preventAutoHideAsync();
 
 export default function RootLayout() {
-  const [loaded] = useFonts({
+  const [fontsLoaded, fontError] = useFonts({
     SpaceMono: require("../assets/fonts/SpaceMono-Regular.ttf"),
   });
 
-  useEffect(() => {
-    if (loaded) {
-      SplashScreen.hideAsync();
+  const handleLayoutRootView = useCallback(async () => {
+    if (fontsLoaded || fontError) {
+      await SplashScreen.hideAsync();
     }
-  }, [loaded]);
+  }, [fontsLoaded, fontError]);
 
-  if (!loaded) {
-    return null;
+  useEffect(() => {
+    handleLayoutRootView();
+  }, [handleLayoutRootView]);
+
+  const screenOptions = useMemo<NativeStackNavigationOptions>(
+    () => ({
+      headerShown: false,
+      contentStyle: { backgroundColor: "#F5FAF8" },
+      animation: "fade" as const,
+    }),
+    []
+  );
+
+  if (!fontsLoaded && !fontError) {
+    return (
+      <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+        <ActivityIndicator size="large" color="#F26C39" />
+      </View>
+    );
   }
 
   return (
     <Provider store={store}>
-      <Stack>
-        <Stack.Screen
-          name="index"
-          options={{ headerShown: false, title: "Transaction List" }}
-        />
-        <Stack.Screen
-          name="[id]"
-          options={{ headerShown: false, title: "Transaction Detail" }}
-        />
-      </Stack>
+      <View style={{ flex: 1 }}>
+        <Stack screenOptions={screenOptions}>
+          <Stack.Screen
+            name="index"
+            options={{
+              title: "Transaction List",
+              animation: "default" as const,
+            }}
+          />
+          <Stack.Screen
+            name="[id]"
+            options={{
+              title: "Transaction Detail",
+              animation: "slide_from_right" as const,
+            }}
+          />
+        </Stack>
+      </View>
     </Provider>
   );
 }

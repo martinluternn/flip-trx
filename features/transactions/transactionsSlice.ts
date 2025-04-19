@@ -1,25 +1,43 @@
-import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
+import {
+  createSlice,
+  createAsyncThunk,
+  PayloadAction,
+  createSelector,
+} from "@reduxjs/toolkit";
 import axios from "axios";
 import { SortOption, Transaction, TransactionsState } from "./types";
+import type { RootState } from "@/redux/store";
+import type { AxiosError } from "axios/index";
 
-export const fetchTransactions = createAsyncThunk<Transaction[]>(
-  "transactions/fetchTransactions",
-  async (_, { rejectWithValue }) => {
-    try {
-      const res = await axios.get(
-        "https://recruitment-test.flip.id/frontend-test"
-      );
-      return Object.entries(res.data as Record<string, any>).map(
-        ([id, item]) => ({
-          id,
-          ...item,
-        })
-      ) as Transaction[];
-    } catch (err: any) {
-      return rejectWithValue(err.message || "Unknown error");
-    }
+// Memoized selector for filtered/sorted data
+const selectRawData = (state: RootState) => state.transactions.rawData;
+const selectSortOption = (state: RootState) => state.transactions.sortOption;
+const selectSearchQuery = (state: RootState) => state.transactions.searchQuery;
+
+export const selectDisplayedTransactions = createSelector(
+  [selectRawData, selectSortOption, selectSearchQuery],
+  (rawData, sortOption, searchQuery) => {
+    return filterAndSortTransactions(rawData, sortOption, searchQuery);
   }
 );
+
+export const fetchTransactions = createAsyncThunk<
+  Transaction[],
+  void,
+  { state: RootState }
+>("transactions/fetchTransactions", async (_, { rejectWithValue }) => {
+  try {
+    const { data } = await axios.get<Record<string, Omit<Transaction, "id">>>(
+      "https://recruitment-test.flip.id/frontend-test"
+    );
+    return Object.entries(data).map(([id, item]) => ({ id, ...item }));
+  } catch (err) {
+    const error = (err as any).isAxiosError
+      ? (err as AxiosError).response?.data || (err as AxiosError).message
+      : "Unknown error";
+    return rejectWithValue(error);
+  }
+});
 
 const initialState: TransactionsState = {
   rawData: [],
@@ -35,42 +53,41 @@ const filterAndSortTransactions = (
   option: SortOption,
   searchQuery: string
 ): Transaction[] => {
-  let processedData = [...data];
+  const query = searchQuery.toLowerCase();
+  const hasSearch = query.length >= 3;
 
-  if (searchQuery.length >= 3) {
-    const query = searchQuery.toLowerCase();
-    processedData = processedData.filter((transaction) => {
-      return (
-        transaction.beneficiary_name.toLowerCase().includes(query) ||
-        transaction.sender_bank.toLowerCase().includes(query) ||
-        transaction.beneficiary_bank.toLowerCase().includes(query) ||
-        transaction.amount.toString().includes(query)
-      );
-    });
-  }
+  // Filter first for better performance
+  const filteredData = hasSearch
+    ? data.filter((transaction) => {
+        return (
+          transaction.beneficiary_name.toLowerCase().includes(query) ||
+          transaction.sender_bank.toLowerCase().includes(query) ||
+          transaction.beneficiary_bank.toLowerCase().includes(query) ||
+          transaction.amount.toString().includes(query)
+        );
+      })
+    : [...data];
 
+  // Sort with pre-computed values
   switch (option) {
     case "name-asc":
-      return processedData.sort((a, b) =>
+      return [...filteredData].sort((a, b) =>
         a.beneficiary_name.localeCompare(b.beneficiary_name)
       );
     case "name-desc":
-      return processedData.sort((a, b) =>
+      return [...filteredData].sort((a, b) =>
         b.beneficiary_name.localeCompare(a.beneficiary_name)
       );
     case "date-asc":
-      return processedData.sort(
-        (a, b) =>
-          new Date(a.created_at).getTime() - new Date(b.created_at).getTime()
+      return [...filteredData].sort(
+        (a, b) => Date.parse(a.created_at) - Date.parse(b.created_at)
       );
     case "date-desc":
-    case "default":
-      return processedData.sort(
-        (a, b) =>
-          new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
+      return [...filteredData].sort(
+        (a, b) => Date.parse(b.created_at) - Date.parse(a.created_at)
       );
     default:
-      return processedData;
+      return filteredData;
   }
 };
 
@@ -80,19 +97,9 @@ const transactionsSlice = createSlice({
   reducers: {
     setSortOption: (state, action: PayloadAction<SortOption>) => {
       state.sortOption = action.payload;
-      state.displayedData = filterAndSortTransactions(
-        state.rawData,
-        action.payload,
-        state.searchQuery || ""
-      );
     },
     setSearchQuery: (state, action: PayloadAction<string>) => {
       state.searchQuery = action.payload;
-      state.displayedData = filterAndSortTransactions(
-        state.rawData,
-        state.sortOption,
-        action.payload
-      );
     },
   },
   extraReducers: (builder) => {
@@ -104,11 +111,6 @@ const transactionsSlice = createSlice({
       .addCase(fetchTransactions.fulfilled, (state, action) => {
         state.status = "succeeded";
         state.rawData = action.payload;
-        state.displayedData = filterAndSortTransactions(
-          action.payload,
-          state.sortOption,
-          state.searchQuery || ""
-        );
       })
       .addCase(fetchTransactions.rejected, (state, action) => {
         state.status = "failed";

@@ -2,58 +2,61 @@ import { View, Text, StyleSheet, Pressable, Alert } from "react-native";
 import { useLocalSearchParams, useRouter } from "expo-router";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import * as Clipboard from "expo-clipboard";
-import { RootState } from "@/redux/store";
 import { useSelector } from "react-redux";
 import { formatBankName } from "@/utils/bankFormatter";
+import React, { useCallback, useMemo } from "react";
+import { selectDisplayedTransactions } from "@/features/transactions/transactionsSlice";
 
 export default function DetailPage() {
   const { id } = useLocalSearchParams();
   const router = useRouter();
-  const { displayedData } = useSelector(
-    (state: RootState) => state.transactions
+  const transaction = useSelector(selectDisplayedTransactions).find(
+    (tx) => tx.id === id?.toString()
   );
 
-  const transaction = displayedData.find((tx) => tx.id === id);
+  const copyToClipboard = useCallback(() => {
+    if (!transaction) return;
+    Clipboard.setStringAsync(transaction.id);
+    Alert.alert("Disalin", "ID Transaksi telah disalin");
+  }, [transaction]);
+
+  const formattedDate = useMemo(() => {
+    if (!transaction?.created_at) return "";
+    return new Date(transaction.created_at).toLocaleDateString("id-ID", {
+      day: "numeric",
+      month: "long",
+      year: "numeric",
+    });
+  }, [transaction?.created_at]);
 
   if (!transaction) {
     return (
-      <View style={styles.container}>
-        <Text>Transaksi tidak ditemukan</Text>
+      <View style={styles.notFoundContainer}>
+        <Text style={styles.notFoundText}>Transaksi tidak ditemukan</Text>
       </View>
     );
   }
 
-  const copyToClipboard = () => {
-    Clipboard.setStringAsync(transaction.id);
-    Alert.alert("Disalin", "ID Transaksi telah disalin");
-  };
-
   return (
     <View style={styles.container}>
-      <View
-        style={{
-          backgroundColor: "#fff",
-          alignContent: "center",
-          justifyContent: "center",
-        }}
-      >
+      <View style={styles.headerContainer}>
         <View style={styles.rowHeader}>
           <Text style={styles.transactionId}>
-            ID TRANSAKSI: {`#${transaction.id}`}
+            ID TRANSAKSI: #{transaction.id}
           </Text>
           <Pressable onPress={copyToClipboard}>
             <MaterialCommunityIcons
               name="content-copy"
               size={20}
               color="#FD6345"
-              style={{transform: [{ scaleX: -1 }]}}
+              style={styles.mirrorIcon}
             />
           </Pressable>
         </View>
 
-        <View style={styles.rowBetween}>
+        <View style={styles.titleRow}>
           <Text style={styles.sectionTitle}>DETAIL TRANSAKSI</Text>
-          <Pressable onPress={() => router.back()}>
+          <Pressable onPress={router.back}>
             <Text style={styles.closeText}>Tutup</Text>
           </Pressable>
         </View>
@@ -65,44 +68,70 @@ export default function DetailPage() {
           {formatBankName(transaction.beneficiary_bank)}
         </Text>
 
-        <View style={styles.row}>
-          <View style={styles.leftColumn}>
-            <Text style={styles.label}>
-              {transaction.beneficiary_name.toUpperCase()}
-            </Text>
-            <Text>7153344001</Text>
-          </View>
-          <View style={styles.leftAlignColumn}>
-            <Text style={styles.label}>NOMINAL</Text>
-            <Text>Rp1.742.940</Text>
-          </View>
-        </View>
+        <DetailRow
+          leftLabel={transaction.beneficiary_name.toUpperCase()}
+          leftValue={transaction.account_number}
+          rightLabel="NOMINAL"
+          rightValue={`Rp${transaction.amount?.toLocaleString("id-ID")}`}
+        />
 
-        <View style={styles.row}>
-          <View style={styles.leftColumn}>
-            <Text style={styles.label}>BERITA TRANSFER</Text>
-            <Text>sample remark</Text>
-          </View>
-          <View style={styles.leftAlignColumn}>
-            <Text style={styles.label}>KODE UNIK</Text>
-            <Text>135</Text>
-          </View>
-        </View>
+        <DetailRow
+          leftLabel="BERITA TRANSFER"
+          leftValue={transaction.remark}
+          rightLabel="KODE UNIK"
+          rightValue={transaction.unique_code}
+        />
 
-        <View style={styles.row}>
-          <View style={styles.leftColumn}>
-            <Text style={styles.label}>WAKTU DIBUAT</Text>
-            <Text>19 April 2025</Text>
-          </View>
-        </View>
-        <View style={{ height: 16 }} />
+        <DetailRow leftLabel="WAKTU DIBUAT" leftValue={formattedDate} />
       </View>
     </View>
   );
 }
 
+const DetailRow = ({
+  leftLabel,
+  leftValue,
+  rightLabel,
+  rightValue,
+}: {
+  leftLabel: string;
+  leftValue?: string | number;
+  rightLabel?: string;
+  rightValue?: string | number;
+}) => (
+  <View style={styles.detailRow}>
+    <View style={styles.column}>
+      <Text style={styles.label}>{leftLabel}</Text>
+      <Text style={styles.value}>{leftValue}</Text>
+    </View>
+    {rightLabel && (
+      <View style={styles.column}>
+        <Text style={styles.label}>{rightLabel}</Text>
+        <Text style={styles.value}>{rightValue}</Text>
+      </View>
+    )}
+  </View>
+);
+
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: "#F5FAF8" },
+  container: {
+    flex: 1,
+    backgroundColor: "#F5FAF8",
+  },
+  headerContainer: {
+    backgroundColor: "#fff",
+    paddingHorizontal: 24,
+  },
+  notFoundContainer: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "#F5FAF8",
+  },
+  notFoundText: {
+    fontSize: 16,
+    color: "#666",
+  },
   transactionId: {
     fontWeight: "bold",
     fontSize: 14,
@@ -112,51 +141,54 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     fontSize: 14,
   },
-  closeText: { color: "#FD6345", fontWeight: "600", fontSize: 14 },
+  closeText: {
+    color: "#FD6345",
+    fontWeight: "600",
+    fontSize: 14,
+  },
   infoBox: {
     backgroundColor: "#fff",
     marginTop: 6,
-    padding: 16,
+    padding: 24,
     borderRadius: 8,
-    paddingHorizontal: 24,
   },
   transferType: {
     fontWeight: "bold",
     fontSize: 16,
     color: "#000",
+    marginBottom: 16,
   },
   rowHeader: {
     flexDirection: "row",
     alignItems: "center",
-    paddingHorizontal: 24,
     marginTop: 56,
+    marginBottom: 42,
   },
-  leftColumn: {
-    flex: 1,
-  },
-  leftAlignColumn: {
-    flex: 0.5,
-  },
-  rowBetween: {
+  titleRow: {
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-    marginTop: 42,
-    paddingHorizontal: 24,
     marginBottom: 24,
   },
-  row: { flexDirection: "row", justifyContent: "space-between", marginTop: 24 },
-  colLeft: { flex: 1.2 },
-  colRight: { flex: 1, alignItems: "flex-end" },
+  detailRow: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    marginTop: 24,
+  },
+  column: {
+    flex: 1,
+  },
   label: {
     fontWeight: "bold",
     fontSize: 14,
     color: "#000",
+    marginBottom: 4,
   },
   value: {
-    fontWeight: "500",
     fontSize: 14,
-    color: "#000",
-    marginTop: 4,
+    color: "#333",
+  },
+  mirrorIcon: {
+    transform: [{ scaleX: -1 }],
   },
 });

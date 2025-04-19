@@ -1,5 +1,5 @@
 import { SortOption } from "@/features/transactions/types";
-import React from "react";
+import React, { useCallback, memo } from "react";
 import {
   Modal,
   View,
@@ -9,59 +9,85 @@ import {
   FlatList,
 } from "react-native";
 
-export type SortDialogProps = {
+type SortDialogProps = {
   visible: boolean;
   onClose: () => void;
   selected: SortOption;
   onSelect: (option: SortOption) => void;
 };
 
-const options: { key: SortOption; label: string }[] = [
+const OPTIONS = [
   { key: "default", label: "URUTKAN" },
   { key: "name-asc", label: "Nama A-Z" },
   { key: "name-desc", label: "Nama Z-A" },
   { key: "date-desc", label: "Tanggal Terbaru" },
   { key: "date-asc", label: "Tanggal Terlama" },
-];
+] as const;
 
-const SortDialog: React.FC<SortDialogProps> = ({
-  visible,
-  onClose,
-  selected,
-  onSelect,
-}) => {
-  return (
-    <Modal visible={visible} animationType="fade" transparent>
-      <Pressable style={styles.backdrop} onPress={onClose}>
-        <View style={styles.dialog}>
-          <FlatList
-            data={options}
-            keyExtractor={(item) => item.key}
-            renderItem={({ item }) => (
-              <Pressable
-                style={styles.option}
-                onPress={() => {
-                  onSelect(item.key);
-                  onClose();
-                }}
-              >
-                <View style={styles.radio}>
-                  <View
-                    style={[
-                      styles.circle,
-                      selected === item.key && styles.circleSelected,
-                    ]}
-                  />
-                </View>
-                <Text style={styles.label}>{item.label}</Text>
-              </Pressable>
-            )}
-          />
-        </View>
-      </Pressable>
-    </Modal>
-  );
+const SortDialog = memo(
+  ({ visible, onClose, selected, onSelect }: SortDialogProps) => {
+    const handleOptionSelect = useCallback(
+      (option: SortOption) => {
+        onSelect(option);
+        onClose();
+      },
+      [onSelect, onClose]
+    );
+
+    const renderItem = useCallback(
+      ({ item }: { item: (typeof OPTIONS)[number] }) => (
+        <OptionItem
+          item={item}
+          selected={selected}
+          onSelect={handleOptionSelect}
+        />
+      ),
+      [selected, handleOptionSelect]
+    );
+
+    return (
+      <Modal visible={visible} animationType="fade" transparent>
+        <Pressable style={styles.backdrop} onPress={onClose}>
+          <View style={styles.dialog}>
+            <FlatList
+              data={OPTIONS}
+              keyExtractor={(item) => item.key}
+              renderItem={renderItem}
+              initialNumToRender={5}
+              maxToRenderPerBatch={5}
+            />
+          </View>
+        </Pressable>
+      </Modal>
+    );
+  }
+);
+
+type OptionItemProps = {
+  item: (typeof OPTIONS)[number];
+  selected: SortOption;
+  onSelect: (option: SortOption) => void;
 };
+
+const OptionItem = memo(({ item, selected, onSelect }: OptionItemProps) => {
+  const handlePress = useCallback(() => {
+    onSelect(item.key);
+  }, [item.key, onSelect]);
+
+  return (
+    <Pressable style={styles.option} onPress={handlePress}>
+      <View style={styles.radio}>
+        <View
+          style={[
+            styles.circle,
+            selected === item.key && styles.circleSelected,
+          ]}
+        />
+      </View>
+      <Text style={styles.label}>{item.label}</Text>
+    </Pressable>
+  );
+});
 
 const styles = StyleSheet.create({
   backdrop: {
